@@ -1,32 +1,62 @@
-<p>Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret <code class="highlighter-rouge">SQL-y</code> errors being returned, (you’ve probably seen error messages which start with <code class="highlighter-rouge">PG::UndefinedTable: ERROR: missing FROM-clause entry for table...</code>, right?) and have no idea how to go about fixing them.</p>
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<p>When you have a <code class="highlighter-rouge">belongs_to</code> or a <code class="highlighter-rouge">has_one/has_many (with or without :through)</code> association defined on your model, you will in many situations benefit from defining scopes in your model that reference your association. Defining a custom scope which references attributes in your association table(s) has the potential to DRY up your code and make code in other parts of your application easier to understand.</p>
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Using scopes with has_many and belongs_to | Duck Type Labs</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Using scopes with has_many and belongs_to" />
+<meta name="author" content="Sid" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them." />
+<meta property="og:description" content="Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them." />
+<link rel="canonical" href="https://ducktypelabs.com/using-scope-with-associations/" />
+<meta property="og:url" content="https://ducktypelabs.com/using-scope-with-associations/" />
+<meta property="og:site_name" content="Duck Type Labs" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-11-27T14:08:14-05:00" />
+<script type="application/ld+json">
+{"url":"https://ducktypelabs.com/using-scope-with-associations/","headline":"Using scopes with has_many and belongs_to","dateModified":"2015-11-27T14:08:14-05:00","datePublished":"2015-11-27T14:08:14-05:00","author":{"@type":"Person","name":"Sid"},"description":"Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducktypelabs.com/using-scope-with-associations/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=f6b9e6ed502ef568e14c2ce9e1199c7d1e522e13">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+
+      <p>Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret <code class="language-plaintext highlighter-rouge">SQL-y</code> errors being returned, (you’ve probably seen error messages which start with <code class="language-plaintext highlighter-rouge">PG::UndefinedTable: ERROR: missing FROM-clause entry for table...</code>, right?) and have no idea how to go about fixing them.</p>
+
+<p>When you have a <code class="language-plaintext highlighter-rouge">belongs_to</code> or a <code class="language-plaintext highlighter-rouge">has_one/has_many (with or without :through)</code> association defined on your model, you will in many situations benefit from defining scopes in your model that reference your association. Defining a custom scope which references attributes in your association table(s) has the potential to DRY up your code and make code in other parts of your application easier to understand.</p>
 
 <h3 id="defining-scopes-directly-on-the-association">Defining scopes directly on the association</h3>
 
-<p><code class="highlighter-rouge">ActiveRecord's</code> <code class="highlighter-rouge">has_many</code> and <code class="highlighter-rouge">belongs_to</code> methods give you the ability to define scopes directly on the association. This way, you can customize the <code class="highlighter-rouge">SQL</code> that is generated when you access the association.</p>
+<p><code class="language-plaintext highlighter-rouge">ActiveRecord's</code> <code class="language-plaintext highlighter-rouge">has_many</code> and <code class="language-plaintext highlighter-rouge">belongs_to</code> methods give you the ability to define scopes directly on the association. This way, you can customize the <code class="language-plaintext highlighter-rouge">SQL</code> that is generated when you access the association.</p>
 
-<p>Say you have a <code class="highlighter-rouge">User</code> model which <code class="highlighter-rouge">has_many</code> <code class="highlighter-rouge">posts</code>, and when you do <code class="highlighter-rouge">@user.posts</code>, you only want to return the posts which were created in the last year. Your <code class="highlighter-rouge">User</code> model would look like:</p>
+<p>Say you have a <code class="language-plaintext highlighter-rouge">User</code> model which <code class="language-plaintext highlighter-rouge">has_many</code> <code class="language-plaintext highlighter-rouge">posts</code>, and when you do <code class="language-plaintext highlighter-rouge">@user.posts</code>, you only want to return the posts which were created in the last year. Your <code class="language-plaintext highlighter-rouge">User</code> model would look like:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
   has_many :posts, -&gt; { where('created_at &gt; ?', Time.current - 1.year) }
 end
 </code></pre></div></div>
 
-<p>Because you’ve defined the scope this way, when you do <code class="highlighter-rouge">@user.posts</code>, the generated query will include the <code class="highlighter-rouge">where</code> condition above so that any posts returned will have been created within the past year.</p>
+<p>Because you’ve defined the scope this way, when you do <code class="language-plaintext highlighter-rouge">@user.posts</code>, the generated query will include the <code class="language-plaintext highlighter-rouge">where</code> condition above so that any posts returned will have been created within the past year.</p>
 
 <p>You can also pass in an argument to this scope, which allows you to further customize the generated query. Say instead of defaulting to 1 year you wanted to pass in the timeframe, you could do something like:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
   has_many :posts, -&gt;(timeframe) { where('created_at &gt; ?', timeframe }
 end
 </code></pre></div></div>
 
-<p><strong>One gotcha to keep in mind, especially when using columns like <code class="highlighter-rouge">created_at</code> which are common to most tables, is that you might have to specify the table name explicitly in your scope if your DB complains.</strong></p>
+<p><strong>One gotcha to keep in mind, especially when using columns like <code class="language-plaintext highlighter-rouge">created_at</code> which are common to most tables, is that you might have to specify the table name explicitly in your scope if your DB complains.</strong></p>
 
 <p>So the above would look like:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
   has_many :posts, -&gt;(timeframe) { where('posts.created_at &gt; ?', timeframe) }
 end
 </code></pre></div></div>
@@ -35,9 +65,9 @@ end
 
 <h3 id="referencing-attributes-of-the-association-table-in-your-scope">Referencing attributes of the association table in your scope</h3>
 
-<p>You might also sometimes benefit from defining scopes in the parent model which reference attributes of your association. Adding to the example above, let’s say you wanted to define a scope on the <code class="highlighter-rouge">User</code> model which returns all users who have pending posts (posts which haven’t been “approved” yet).</p>
+<p>You might also sometimes benefit from defining scopes in the parent model which reference attributes of your association. Adding to the example above, let’s say you wanted to define a scope on the <code class="language-plaintext highlighter-rouge">User</code> model which returns all users who have pending posts (posts which haven’t been “approved” yet).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
   has_many :posts
   scope :with_pending_posts, -&gt; { joins(:posts).where('posts.pending = true') }
 end
@@ -46,43 +76,43 @@ end
 <p>Couple of things to note from the scope definition above:</p>
 
 <ol>
-  <li>You <strong>have to use the <code class="highlighter-rouge">joins</code> method in your scope</strong> so that your DB knows which table you’re referring to.</li>
-  <li>To reference association attributes in the <code class="highlighter-rouge">where</code> method, you <strong>have to use the table name of the association followed by the column name</strong> (<code class="highlighter-rouge">posts.pending</code> in this case) to prevent your DB from complaining, and to have it return the expected result.</li>
+  <li>You <strong>have to use the <code class="language-plaintext highlighter-rouge">joins</code> method in your scope</strong> so that your DB knows which table you’re referring to.</li>
+  <li>To reference association attributes in the <code class="language-plaintext highlighter-rouge">where</code> method, you <strong>have to use the table name of the association followed by the column name</strong> (<code class="language-plaintext highlighter-rouge">posts.pending</code> in this case) to prevent your DB from complaining, and to have it return the expected result.</li>
 </ol>
 
-<p>A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You’d of course have to set up your <code class="highlighter-rouge">joins</code> correctly – refer to <a href="http://apidock.com/rails/ActiveRecord/QueryMethods/joins">the ActiveRecord documentation</a> for more info, and if you’re still stuck, ping me in the comments below!</p>
+<p>A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You’d of course have to set up your <code class="language-plaintext highlighter-rouge">joins</code> correctly – refer to <a href="http://apidock.com/rails/ActiveRecord/QueryMethods/joins">the ActiveRecord documentation</a> for more info, and if you’re still stuck, ping me in the comments below!</p>
 
 <p><strong>Update</strong>: Kevin pointed out in the comments section that instead of doing:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :with_pending_posts, -&gt; { joins(:posts).where('posts.pending = true') }
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :with_pending_posts, -&gt; { joins(:posts).where('posts.pending = true') }
 </code></pre></div></div>
 
 <p>you could do:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :with_pending_posts, -&gt; { joins(:posts).merge(Post.pending) }
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :with_pending_posts, -&gt; { joins(:posts).merge(Post.pending) }
 </code></pre></div></div>
 
 <p>This is definitely worth a consideration as it makes your code cleaner and easier to read. Not only that, you will probably be able to make use of the scope you define on your Post model in other areas of your system.</p>
 
-<p>If you haven’t seen the <code class="highlighter-rouge">merge</code> method before, take a look at the following resources to get acquainted and some ideas on how it could be useful:</p>
+<p>If you haven’t seen the <code class="language-plaintext highlighter-rouge">merge</code> method before, take a look at the following resources to get acquainted and some ideas on how it could be useful:</p>
 
 <ol>
   <li><a href="http://apidock.com/rails/ActiveRecord/SpawnMethods/merge">ActiveRecord documentation on merge</a></li>
   <li><a href="https://gorails.com/blog/activerecord-merge">A useful article via gorails.com on using merge with scopes</a></li>
-  <li><a href="http://ducktypelabs.com/four-ways-to-filter-has_many-associations/">An article I wrote on 4 ways to filter has_many associations, one of which includes using the <code class="highlighter-rouge">merge</code> method</a></li>
+  <li><a href="http://ducktypelabs.com/four-ways-to-filter-has_many-associations/">An article I wrote on 4 ways to filter has_many associations, one of which includes using the <code class="language-plaintext highlighter-rouge">merge</code> method</a></li>
 </ol>
 
 <h3 id="troubleshooting-error-messages">Troubleshooting error messages</h3>
 
-<p>When the scope you’re building is complex, you’ll probably run into errors, especially <code class="highlighter-rouge">SQL</code> errors. It will <strong>benefit you greatly to learn how to read these errors and understand what your DB is complaining about</strong>. Typical complaints include tables which are not defined and columns which don’t exist because the query is looking for them in the wrong table.</p>
+<p>When the scope you’re building is complex, you’ll probably run into errors, especially <code class="language-plaintext highlighter-rouge">SQL</code> errors. It will <strong>benefit you greatly to learn how to read these errors and understand what your DB is complaining about</strong>. Typical complaints include tables which are not defined and columns which don’t exist because the query is looking for them in the wrong table.</p>
 
 <p>Remember that a custom scope is the same as defining a class method. So if you’re stuck, ask yourself how you would implement the scope as a class method.</p>
 
-<p>Keep in mind that if you want your scope to do calculations based on association attributes, you might not be able to use <code class="highlighter-rouge">Ruby</code>, and will have to brush up on your <code class="highlighter-rouge">SQL</code> (more importantly, <code class="highlighter-rouge">SQL</code> that works with your DB of choice) to accomplish what you need.</p>
+<p>Keep in mind that if you want your scope to do calculations based on association attributes, you might not be able to use <code class="language-plaintext highlighter-rouge">Ruby</code>, and will have to brush up on your <code class="language-plaintext highlighter-rouge">SQL</code> (more importantly, <code class="language-plaintext highlighter-rouge">SQL</code> that works with your DB of choice) to accomplish what you need.</p>
 
-<p>For example, check out the scope below, where for an <code class="highlighter-rouge">Availability</code> model, we’re returning records whose <code class="highlighter-rouge">start_time</code> is greater than an associated <code class="highlighter-rouge">Venue's</code> <code class="highlighter-rouge">notice_time</code>, which in this case happens to be stored as an integer. As you’ll notice, <code class="highlighter-rouge">Now()</code> and <code class="highlighter-rouge">1 hour::interval</code> are <code class="highlighter-rouge">Postgres</code> specific SQL.</p>
+<p>For example, check out the scope below, where for an <code class="language-plaintext highlighter-rouge">Availability</code> model, we’re returning records whose <code class="language-plaintext highlighter-rouge">start_time</code> is greater than an associated <code class="language-plaintext highlighter-rouge">Venue's</code> <code class="language-plaintext highlighter-rouge">notice_time</code>, which in this case happens to be stored as an integer. As you’ll notice, <code class="language-plaintext highlighter-rouge">Now()</code> and <code class="language-plaintext highlighter-rouge">1 hour::interval</code> are <code class="language-plaintext highlighter-rouge">Postgres</code> specific SQL.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Availablity &lt; ActiveRecord::Base
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Availablity &lt; ActiveRecord::Base
   has_one :venue
   scope :after_notice_time, -&gt; { joins(:venue).where("start_time &gt;= now() + venues.notice_time * '1 hour'::interval") }
 end
@@ -98,3 +128,12 @@ end
 
 <div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
 </div>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

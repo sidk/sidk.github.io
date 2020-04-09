@@ -1,4 +1,34 @@
-<p>This list is for you if:</p>
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>5 Mistakes Web Developers Should Avoid When using JWTs for Authentication | Duck Type Labs</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="5 Mistakes Web Developers Should Avoid When using JWTs for Authentication" />
+<meta name="author" content="Sid" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This list is for you if:" />
+<meta property="og:description" content="This list is for you if:" />
+<link rel="canonical" href="https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/" />
+<meta property="og:url" content="https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/" />
+<meta property="og:site_name" content="Duck Type Labs" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-17T13:46:56-04:00" />
+<script type="application/ld+json">
+{"url":"https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/","headline":"5 Mistakes Web Developers Should Avoid When using JWTs for Authentication","dateModified":"2020-03-17T13:46:56-04:00","datePublished":"2020-03-17T13:46:56-04:00","author":{"@type":"Person","name":"Sid"},"description":"This list is for you if:","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=f6b9e6ed502ef568e14c2ce9e1199c7d1e522e13">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+
+      <p>This list is for you if:</p>
 
 <ul>
   <li>You care about keeping your users safe and wonder what the best practices for web app authentication are.</li>
@@ -9,7 +39,7 @@
 
 <p>JWTs have received and continue to receive a lot of positive and negative attention over the last few years. The pro-JWT camp touts benefits like statelessness, portability, a convenient interface and so on. The anti-JWT camp says JWT is a kitchen sink of crypto formats and maximizes the number of things that can go wrong.</p>
 
-<p><code class="highlighter-rouge">¯\_(ツ)_/¯</code></p>
+<p><code class="language-plaintext highlighter-rouge">¯\_(ツ)_/¯</code></p>
 
 <p>In this post, I’ll take a pragmatic approach and attempt to draw up a list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you’re building authentication. Note that some of the items in this list apply regardless of if you’re using JWTs or not, and some are specific to JWTs.</p>
 
@@ -34,7 +64,7 @@
 
 <p>A typical JWT looks like this:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 </code></pre></div></div>
 
 <p>Though this looks illegible, it is actually very readable because it’s a plain text JSON object <a href="https://en.wikipedia.org/wiki/Binary-to-text_encoding">encoded</a> using base64. For every piece of information you decide to put in your JWT, ask yourself: How much damage would it cause if this gets into the wrong hands?</p>
@@ -54,7 +84,7 @@
 
 <p>If you’re using a framework like Rails or Express, the chances are high that the framework will include options that you can use to protect your users against CSRF, using one or more of the ways detailed in the Wikipedia link above.</p>
 
-<p><em>Related:</em> You’ll also want to set the <code class="highlighter-rouge">httpOnly</code> and <code class="highlighter-rouge">secure</code> flags on your cookies. <code class="highlighter-rouge">httpOnly</code> prevents malicious scripts from accessing and potentially exfiltrating the contents of your JWT (in the context of an <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a> attack) and <code class="highlighter-rouge">secure</code> ensures that cookies will not be sent across the wire unless the <a href="https://en.wikipedia.org/wiki/HTTPS">https</a> protocol is being used.</p>
+<p><em>Related:</em> You’ll also want to set the <code class="language-plaintext highlighter-rouge">httpOnly</code> and <code class="language-plaintext highlighter-rouge">secure</code> flags on your cookies. <code class="language-plaintext highlighter-rouge">httpOnly</code> prevents malicious scripts from accessing and potentially exfiltrating the contents of your JWT (in the context of an <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a> attack) and <code class="language-plaintext highlighter-rouge">secure</code> ensures that cookies will not be sent across the wire unless the <a href="https://en.wikipedia.org/wiki/HTTPS">https</a> protocol is being used.</p>
 
 <h2 id="storing-the-jwt-in-local-storage">Storing the JWT in local storage</h2>
 
@@ -62,7 +92,7 @@
 
 <h3 id="local-storage-is-not-protected-against-xss">Local storage is not protected against XSS</h3>
 
-<p>If you have an XSS vulnerability, a malicious script could easily exfiltrate the contents of local storage to anywhere it chooses to, allowing the attacker to impersonate the user at their convenience. A common counterpoint to this argument is that in the event of an XSS attack against an app that stores its JWT in a cookie, an attacker would still be able to make authenticated requests since <code class="highlighter-rouge">httpOnly</code> and <code class="highlighter-rouge">secure</code> do nothing to prevent this. This is true, but it is arguably more secure because it limits the attacker to carrying out specific attacks only when the user is actively using the app, or has it open in a tab somewhere.</p>
+<p>If you have an XSS vulnerability, a malicious script could easily exfiltrate the contents of local storage to anywhere it chooses to, allowing the attacker to impersonate the user at their convenience. A common counterpoint to this argument is that in the event of an XSS attack against an app that stores its JWT in a cookie, an attacker would still be able to make authenticated requests since <code class="language-plaintext highlighter-rouge">httpOnly</code> and <code class="language-plaintext highlighter-rouge">secure</code> do nothing to prevent this. This is true, but it is arguably more secure because it limits the attacker to carrying out specific attacks only when the user is actively using the app, or has it open in a tab somewhere.</p>
 
 <p>I’d bias towards choosing the more secure option in this case (and also do my best not to introduce XSS vulnerabilities!).</p>
 
@@ -91,3 +121,12 @@
 </ul>
 
 <p>I highly recommend giving these a read to further understand what could go wrong when using JWTs, so you’re best prepared to understand the trade-offs and design/build a secure system.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

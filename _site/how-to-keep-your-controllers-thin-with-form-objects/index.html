@@ -1,23 +1,53 @@
-<p>Typically in Rails, forms which post data to a <code class="highlighter-rouge">#create</code> or <code class="highlighter-rouge">#update</code> action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:</p>
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How To Keep Your Controllers Thin with Form Objects | Duck Type Labs</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="How To Keep Your Controllers Thin with Form Objects" />
+<meta name="author" content="Sid" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Typically in Rails, forms which post data to a #create or #update action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:" />
+<meta property="og:description" content="Typically in Rails, forms which post data to a #create or #update action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:" />
+<link rel="canonical" href="https://ducktypelabs.com/how-to-keep-your-controllers-thin-with-form-objects/" />
+<meta property="og:url" content="https://ducktypelabs.com/how-to-keep-your-controllers-thin-with-form-objects/" />
+<meta property="og:site_name" content="Duck Type Labs" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-05-24T17:00:05-04:00" />
+<script type="application/ld+json">
+{"url":"https://ducktypelabs.com/how-to-keep-your-controllers-thin-with-form-objects/","headline":"How To Keep Your Controllers Thin with Form Objects","dateModified":"2016-05-24T17:00:05-04:00","datePublished":"2016-05-24T17:00:05-04:00","author":{"@type":"Person","name":"Sid"},"description":"Typically in Rails, forms which post data to a #create or #update action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducktypelabs.com/how-to-keep-your-controllers-thin-with-form-objects/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=f6b9e6ed502ef568e14c2ce9e1199c7d1e522e13">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+
+      <p>Typically in Rails, forms which post data to a <code class="language-plaintext highlighter-rouge">#create</code> or <code class="language-plaintext highlighter-rouge">#update</code> action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:</p>
 
 <ol>
-  <li>The form submits some data to the <code class="highlighter-rouge">#create</code> action in <code class="highlighter-rouge">UsersController</code>.</li>
-  <li>The <code class="highlighter-rouge">#create</code> action, with something like <code class="highlighter-rouge">User.create(params)</code> creates the record in the <code class="highlighter-rouge">User</code> table.</li>
+  <li>The form submits some data to the <code class="language-plaintext highlighter-rouge">#create</code> action in <code class="language-plaintext highlighter-rouge">UsersController</code>.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">#create</code> action, with something like <code class="language-plaintext highlighter-rouge">User.create(params)</code> creates the record in the <code class="language-plaintext highlighter-rouge">User</code> table.</li>
 </ol>
 
-<p>This is easy to reason about. We have one form to create one user. It submits user data to a users controller, which then creates a record in the User table with a call to the <code class="highlighter-rouge">User</code> model.</p>
+<p>This is easy to reason about. We have one form to create one user. It submits user data to a users controller, which then creates a record in the User table with a call to the <code class="language-plaintext highlighter-rouge">User</code> model.</p>
 
 <p>Though some percentage of the forms in our app can be described this simply, <strong>most forms we find ourselves needing to build are not that simple</strong>. They might need to save multiple records, or update more than one table, and/or perform some additional processing (like sending an email). There might even be more than one context under which a record can be updated (for example a multi-step application form).</p>
 
 <p>Trying to stuff a bunch of logic in your controller can turn out to be quite painful in the long run, as they become longer and harder to understand. Moreover, you might find yourself having to perform gymnastics with your views to get them to pass in parameters correctly.</p>
 
-<p>For example, imagine you’re building a form for a project management app. This form creates a user like in our first example, but in addition, has to do a few other things. First, it has to create a record in the <code class="highlighter-rouge">Message</code> table. Then it has to create a record in the Task table. Finally it has to send an email to the project manager.</p>
+<p>For example, imagine you’re building a form for a project management app. This form creates a user like in our first example, but in addition, has to do a few other things. First, it has to create a record in the <code class="language-plaintext highlighter-rouge">Message</code> table. Then it has to create a record in the Task table. Finally it has to send an email to the project manager.</p>
 
 <p>Some definitions and assumptions before we go forward:</p>
 
 <ol>
-  <li>The <code class="highlighter-rouge">Message</code> table is used for internal messaging amongst various members of the project.</li>
-  <li>The <code class="highlighter-rouge">Task</code> table is used to store and manage tasks assigned to members of the project.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">Message</code> table is used for internal messaging amongst various members of the project.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">Task</code> table is used to store and manage tasks assigned to members of the project.</li>
   <li>When a new user is created, we want to send an internal message and assign a new task to the project manager.</li>
   <li>We also want to send an email notification to the project manager when a new user is created.</li>
 </ol>
@@ -25,8 +55,8 @@
 <p>Compared to the first example, it’s obvious that this form requires a flow that doesn’t quite as neatly fit in to the conventional form flow that we saw earlier. There are a few ways we can handle this:</p>
 
 <ol>
-  <li>Add in the code to <code class="highlighter-rouge">UsersController</code> to accomplish the extra stuff.</li>
-  <li>If your models are associated with each other (via <code class="highlighter-rouge">has_many</code> or <code class="highlighter-rouge">belongs_to</code>), build a <a href="http://guides.rubyonrails.org/form_helpers.html#nested-forms">nested form</a> using either Rails’ built-in <code class="highlighter-rouge">fields_for</code> helper, or Ryan Bates’ <a href="https://github.com/ryanb/nested_form">nested_form</a> gem. You’ll still have to send the email in the controller.</li>
+  <li>Add in the code to <code class="language-plaintext highlighter-rouge">UsersController</code> to accomplish the extra stuff.</li>
+  <li>If your models are associated with each other (via <code class="language-plaintext highlighter-rouge">has_many</code> or <code class="language-plaintext highlighter-rouge">belongs_to</code>), build a <a href="http://guides.rubyonrails.org/form_helpers.html#nested-forms">nested form</a> using either Rails’ built-in <code class="language-plaintext highlighter-rouge">fields_for</code> helper, or Ryan Bates’ <a href="https://github.com/ryanb/nested_form">nested_form</a> gem. You’ll still have to send the email in the controller.</li>
   <li>Create a new controller and corresponding “form object” that encapsulates what you want to do.</li>
 </ol>
 
@@ -42,14 +72,14 @@
   <li>Your app will be easy to change.</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>If your app is a decent sized web-app, you will likely have a multitude of paths and views through which data gets saved and/or retrieved from your Users table. It&amp;#8217;s worth thinking about if `UsersController` or the `User` model should be where these paths meet, because if you&amp;#8217;re not careful your controller can devolve into a mess of hard-to-change conditional code.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>If your app is a decent sized web-app, you will likely have a multitude of paths and views through which data gets saved and/or retrieved from your Users table. It&amp;#8217;s worth thinking about if `UsersController` or the `User` model should be where these paths meet, because if you&amp;#8217;re not careful your controller can devolve into a mess of hard-to-change conditional code.
 </code></pre></div></div>
 
 <ol>
   <li>Your app will be easy to reason about</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Conventionally in Rails, the simplest way to reason about a controller is to have it concerned with the seven RESTful actions and views; these actions would only interact with one model and ideally the interaction would be a one-liner like `@user.update(params)`. The closer your controller is to this pattern, the easier your controller will be to reason about.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Conventionally in Rails, the simplest way to reason about a controller is to have it concerned with the seven RESTful actions and views; these actions would only interact with one model and ideally the interaction would be a one-liner like `@user.update(params)`. The closer your controller is to this pattern, the easier your controller will be to reason about.
 </code></pre></div></div>
 
 <ol>
@@ -71,12 +101,12 @@
 
 <p>All seven actions might not always make sense, which is why I find it handy to define my routes like this, for example:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resource :user_registrations, only: [:create, :update, :new, :edit] 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resource :user_registrations, only: [:create, :update, :new, :edit] 
 </code></pre></div></div>
 
-<p>In my Rails apps, the convention I follow is to always name the form object class <code class="highlighter-rouge">FormObject</code>, and namespace them with something context dependent. So in this case, my form object would be <code class="highlighter-rouge">UserRegistration::FormObject</code>.</p>
+<p>In my Rails apps, the convention I follow is to always name the form object class <code class="language-plaintext highlighter-rouge">FormObject</code>, and namespace them with something context dependent. So in this case, my form object would be <code class="language-plaintext highlighter-rouge">UserRegistration::FormObject</code>.</p>
 
-<p>So your form, which resides at <code class="highlighter-rouge">user_registrations/new.html.erb</code>, posts some data to the <code class="highlighter-rouge">#create</code> action of the <code class="highlighter-rouge">UserRegistrationsController</code>, which calls <code class="highlighter-rouge">#save</code> on <code class="highlighter-rouge">UserRegistration::FormObject</code> with the params you pass in.</p>
+<p>So your form, which resides at <code class="language-plaintext highlighter-rouge">user_registrations/new.html.erb</code>, posts some data to the <code class="language-plaintext highlighter-rouge">#create</code> action of the <code class="language-plaintext highlighter-rouge">UserRegistrationsController</code>, which calls <code class="language-plaintext highlighter-rouge">#save</code> on <code class="language-plaintext highlighter-rouge">UserRegistration::FormObject</code> with the params you pass in.</p>
 
 <div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
 </div>
@@ -85,7 +115,7 @@
 
 <p>To be able to specify an input in your form, you need to expose the related attribute in your form object. In our example, one of the inputs we want is the user’s name. So in our form object, we’d do:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module UserRegistration
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module UserRegistration
   class FormObject
     include ActiveModel::Model
     attr_accessor :name
@@ -98,24 +128,24 @@
 end
 </code></pre></div></div>
 
-<p>Because we’ve said <code class="highlighter-rouge">attr_accessor :name</code>, we can now in our view say something like <code class="highlighter-rouge">&lt;%= f.text_field :name %&gt;</code>.</p>
+<p>Because we’ve said <code class="language-plaintext highlighter-rouge">attr_accessor :name</code>, we can now in our view say something like <code class="language-plaintext highlighter-rouge">&lt;%= f.text_field :name %&gt;</code>.</p>
 
 <p>You’ll also notice a couple of other things:</p>
 
 <ol>
   <li>
-    <p>We said <code class="highlighter-rouge">include ActiveModel::Model</code>. This is cool, because we can now use methods like <code class="highlighter-rouge">validates</code> and perform any validations we want. An advantage of using validations in the form object is that they are specific to the form object and won’t clutter up your model(s).</p>
+    <p>We said <code class="language-plaintext highlighter-rouge">include ActiveModel::Model</code>. This is cool, because we can now use methods like <code class="language-plaintext highlighter-rouge">validates</code> and perform any validations we want. An advantage of using validations in the form object is that they are specific to the form object and won’t clutter up your model(s).</p>
   </li>
   <li>
-    <p>We also defined the <code class="highlighter-rouge">model_name</code> class method. The Rails form builder methods (<code class="highlighter-rouge">form_for</code> and the rest) need this to be defined.</p>
+    <p>We also defined the <code class="language-plaintext highlighter-rouge">model_name</code> class method. The Rails form builder methods (<code class="language-plaintext highlighter-rouge">form_for</code> and the rest) need this to be defined.</p>
   </li>
 </ol>
 
 <h3 id="form-object-initialize-and-save">Form Object Initialize and Save</h3>
 
-<p>The behavior of our form object will be governed by two methods. <code class="highlighter-rouge">#initialize</code> and <code class="highlighter-rouge">#save</code>. This is because in our controller, we want to be able define our create action like so:</p>
+<p>The behavior of our form object will be governed by two methods. <code class="language-plaintext highlighter-rouge">#initialize</code> and <code class="language-plaintext highlighter-rouge">#save</code>. This is because in our controller, we want to be able define our create action like so:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def create
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def create
   @form_object = UserRegistration::FormObject.new(params)
   if @form_object.save
     ... #typically we flash and redirect here
@@ -129,7 +159,7 @@ end
 
 <p>Your initialize method would look something like:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def initialize(params)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def initialize(params)
   self.name = params.fetch(:name, '')
   ... # and so on and so forth
 end
@@ -137,7 +167,7 @@ end
 
 <p>And save:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
 def save
   return false unless valid? #valid? comes from ActiveModel::Model
   User.create(name: name)
@@ -159,7 +189,7 @@ end
 # and so on and so forth
 </code></pre></div></div>
 
-<p>The important thing with the <code class="highlighter-rouge">#save</code> method is to return false and true correctly depending on if the form submission meets your criteria, so that your controller can make the right decision.</p>
+<p>The important thing with the <code class="language-plaintext highlighter-rouge">#save</code> method is to return false and true correctly depending on if the form submission meets your criteria, so that your controller can make the right decision.</p>
 
 <h3 id="recap">Recap</h3>
 
@@ -171,3 +201,12 @@ end
 
 <div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
 </div>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>
