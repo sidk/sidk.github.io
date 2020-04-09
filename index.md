@@ -1,6 +1,6 @@
 ---
 id: 137
-title: About
+title: List of All Articles
 date: 2015-11-27T14:26:59-05:00
 author: Sid
 layout: default
@@ -10,9 +10,6 @@ cta_content_placement:
 classic-editor-remember:
   - classic-editor
 ---
-
-# List of All Articles:
-
 <ul>
   {% for post in site.posts %}
     <li>

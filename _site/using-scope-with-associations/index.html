@@ -1,33 +1,16 @@
-<!DOCTYPE html>
-<html lang="en-US">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Using scopes with has_many and belongs_to | Duck Type Labs</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Using scopes with has_many and belongs_to" />
-<meta name="author" content="Sid" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them." />
-<meta property="og:description" content="Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them." />
-<link rel="canonical" href="https://ducktypelabs.com/using-scope-with-associations/" />
-<meta property="og:url" content="https://ducktypelabs.com/using-scope-with-associations/" />
-<meta property="og:site_name" content="Duck Type Labs" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2015-11-27T14:08:14-05:00" />
-<script type="application/ld+json">
-{"url":"https://ducktypelabs.com/using-scope-with-associations/","headline":"Using scopes with has_many and belongs_to","dateModified":"2015-11-27T14:08:14-05:00","datePublished":"2015-11-27T14:08:14-05:00","author":{"@type":"Person","name":"Sid"},"description":"Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret SQL-y errors being returned, (you’ve probably seen error messages which start with PG::UndefinedTable: ERROR: missing FROM-clause entry for table..., right?) and have no idea how to go about fixing them.","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducktypelabs.com/using-scope-with-associations/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-    <link rel="stylesheet" href="/assets/css/style.css?v=f6b9e6ed502ef568e14c2ce9e1199c7d1e522e13">
+    <meta charset="utf-8">
+    <title>Using scopes with has_many and belongs_to</title>
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-
+    <nav>
+      <a href="/">List of Articles</a>
+    </nav>
+    <h1>Using scopes with has_many and belongs_to</h1>
+    <section>
       <p>Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret <code class="language-plaintext highlighter-rouge">SQL-y</code> errors being returned, (you’ve probably seen error messages which start with <code class="language-plaintext highlighter-rouge">PG::UndefinedTable: ERROR: missing FROM-clause entry for table...</code>, right?) and have no idea how to go about fixing them.</p>
 
 <p>When you have a <code class="language-plaintext highlighter-rouge">belongs_to</code> or a <code class="language-plaintext highlighter-rouge">has_one/has_many (with or without :through)</code> association defined on your model, you will in many situations benefit from defining scopes in your model that reference your association. Defining a custom scope which references attributes in your association table(s) has the potential to DRY up your code and make code in other parts of your application easier to understand.</p>
@@ -129,11 +112,9 @@ end
 <div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
 </div>
 
-
-      
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-    
+    </section>
+    <footer>
+      &copy; to me
+    </footer>
   </body>
 </html>
