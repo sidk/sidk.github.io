@@ -1,0 +1,42 @@
+---
+id: 409
+date: 2016-07-04T17:04:09-04:00
+author: Sid
+layout: page
+guid: http://ducktypelabs.com/?page_id=409
+---
+## Introduction
+
+Let&#8217;s consider a hypothetical situation: You&#8217;ve been working on a Rails app for about a year. When the app was new and its functionality limited, you could add features relatively simply by spinning up a new controller, model and view or worst case add a few lines to an existing controller, model or view.
+
+However, as time went by, the app&#8217;s feature set kept increasing. Moreover existing features had to be regularly changed to reflect changes in business goals and priorities. Because there are only so many controllers, views and models that can pertain to a given app&#8217;s domain, you&#8217;re noticing that the number of lines in these files is slowly increasing as well. Combined with the frequent changes and updates to existing features (which introduce quite a few edge cases), you&#8217;re realizing that your codebase is becoming harder to understand, test and ultimately change.
+
+In this tutorial, we&#8217;ll take a look at how we can prevent the above situation from happening by using the &#8220;Interactor&#8221; pattern. We&#8217;ll start with a general discussion of code smells (in particular smells which indicate bloated code) and their prescriptive refactorings. Then we&#8217;ll take a brief look at where these smells are typically found in a Rails app and the different techniques available to refactor them, out of which the &#8220;Interactor&#8221; pattern is one. Finally, we&#8217;ll go through an example with code that will illustrate how an Interactor is used in practice.
+
+## Code Smells
+
+Probably the most important quality of any piece of software, apart from the fact that it works, is how easy it is to understand and change. Code smells are warning signs that our software is getting hard to understand and change.
+
+Martin Fowler, in his classic book _Refactoring_, laid out 23 types of code smells, each with a prescriptive refactoring. As Sandi Metz mentioned in [her RailsConf 2016 talk](https://www.youtube.com/watch?v=PJjHfa5yxlU), there are two important &#8220;big picture&#8221; takeaways from this book. One, that each code smell has a descriptive name and definition (for example &#8220;Long Method&#8221;). And two, each code smell can be refactored with one or more prescriptive refactorings that are associated with it. Each refactoring also has a name and a clear definition (for example, &#8220;Replace Method with Method Object&#8221;).
+
+So, contrary to the view that a code smell is purely intuitive and refers vaguely to &#8220;ugly&#8221; code, we can make use of the &#8230; this is not to say that intuition is not important.
+
+For a bird&#8217;s eye view of the 23 types of code smells and their associated refactorings, [download this handy reference](http://www.industriallogic.com/wp-content/uploads/2005/09/smellstorefactorings.pdf) from the folks at Industrial Logic.
+
+## Long Methods and Large Classes
+
+In their paper _Subjective evaluation of software evolvability using code smells: An empirical study_, Mika V. Mäntylä & Casper Lassenius categorized the 23 code smells into five distinct categories. One of these categories is known as the &#8220;Bloaters&#8221;, and as the name implies, contains the smells which most indicate bloat in our code. The &#8220;Bloaters&#8221; category contains the following code smells:
+
+  * Long Method
+  * Large Class
+  * Primitive Obsession
+  * Long Parameter List
+  * Data Clumps
+
+In Rails apps which resemble the hypothetical one described in the introduction, growth of the feature set is tied directly to growth in the size of controllers and models. And growth in the size of controllers and models implies that these classes are getting bigger, and so are the methods that they contain. As it so happens, this most often corresponds to the Long Method and Large Class code smells.
+
+### Why is This a Bad Thing?
+
+A key idea of &#8220;good&#8221; object oriented design is that a class or method should do the smallest possible useful thing (Metz). A class or method which restricts itself to one responsibility lends itself better to reuse, understandability and testing. A large class or method usually implies the opposite &#8211; that it is doing too much, and is thus harder to reuse, understand and test.
+
+## Birth of a Fat Controller

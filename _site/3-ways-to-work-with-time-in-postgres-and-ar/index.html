@@ -1,0 +1,206 @@
+<p>Let’s say you’re developing a project management app with users and projects and the product manager asks you:</p>
+
+<blockquote>
+  <ol>
+    <li>How much time does it take a given user to create their first project?</li>
+    <li>Give me a list of users who took longer than 1 month to create their first project.</li>
+    <li>What is the average amount of time that it takes for a user to create their first project?</li>
+    <li>What is the average amount of time per user between project creation?</li>
+  </ol>
+</blockquote>
+
+<p>You could approach solving the problems above purely in Ruby and <code class="highlighter-rouge">ActiveRecord</code>. However the data we want to work with resides in a database. The database is smart, capable &amp; fast; with SQL, we can make the database retrieve arbitrary rows and perform complex calculations. It therefore stands to reason that making the database “do the work” as much as possible before sending information to Ruby-land will net us performance gains.</p>
+
+<p>In this article, we’re going to explore how we can solve the above problems in Rails using <code class="highlighter-rouge">SQL</code> and a bit of <code class="highlighter-rouge">ActiveRecord</code>. The SQL used in this article applies only to <code class="highlighter-rouge">Postgres</code>(version 9.4.1), though the ideas in general can be translated to other database management systems.</p>
+
+<h2 id="first-a-brief-primer-on-select">First, a brief primer on <code class="highlighter-rouge">SELECT</code></h2>
+
+<p>A <code class="highlighter-rouge">SELECT</code> statement retrieves zero or more rows from one or more database tables or database views.</p>
+
+<p>So something like:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM users
+</code></pre></div></div>
+
+<p>will retrieve all available rows from the <code class="highlighter-rouge">users</code> table.</p>
+
+<p>You can also pass in “aggregator” functions like MIN(), COUNT(), MEAN() etc to SELECT. When these functions are passed in to SELECT, the return value is a single piece of data (an integer, string, timestamp etc).</p>
+
+<p>So for example this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT MIN(created_at) FROM users
+</code></pre></div></div>
+
+<p>will return the earliest <code class="highlighter-rouge">created_at</code> (which is a timestamp) in the users table.</p>
+
+<p><code class="highlighter-rouge">SELECT</code> functions can also be nested within themselves, as we’ll see soon enough.</p>
+
+<p>In <code class="highlighter-rouge">ActiveRecord</code> the <a href="http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-select"><code class="highlighter-rouge">select</code> method</a> can be used to achieve the same result. Also, calls to methods such as <code class="highlighter-rouge">.all</code>, <code class="highlighter-rouge">.where</code>, <code class="highlighter-rouge">.find</code> etc translate to <code class="highlighter-rouge">SELECT</code> functions.</p>
+
+<p><strong>I’ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you’d prefer downloading and printing it out, <a href="http://ducktypelabs.com/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf">click here to get it!</a></strong></p>
+
+<p>For the sake of this article, assume our models look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+  has_many :projects
+end
+
+class Project &lt; ActiveRecord::Base
+  belongs_to :user
+end
+</code></pre></div></div>
+
+<h2 id="arithmetic-operators-----and-">Arithmetic operators (<code class="highlighter-rouge">-</code>, <code class="highlighter-rouge">+</code>, <code class="highlighter-rouge">*</code> and <code class="highlighter-rouge">/</code>)</h2>
+
+<p>The first problem we have to tackle is figuring out how much time it takes a user to create their first project. This time equates to the difference between the user’s earliest <code class="highlighter-rouge">Project#created_at</code> and <code class="highlighter-rouge">User#created_at</code>.</p>
+
+<p>In Postgres, we can use the arithmetic difference operator <code class="highlighter-rouge">-</code> to calculate the difference between two timestamps or dates. The data type matters – if we calculate the difference between two timestamps, the return value is an “interval”, and if we calculate the difference between two dates, the return value is an integer representing the number of days between the two dates.</p>
+
+<p>To make it easy to display the data, we’ll plan to use the <code class="highlighter-rouge">select</code> method with something like:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users = User.select('users.email, (projects.created_at - users.created_at) as time_to_first_project')
+</code></pre></div></div>
+
+<p>This will return an <code class="highlighter-rouge">ActiveRecord::Relation</code> which we can then iterate over and call <code class="highlighter-rouge">#time_to_first_project</code> on:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% users.each do |user| %&gt;
+  &lt;%= user.email %&gt;
+  &lt;%= user.time_to_first_project %&gt;
+&lt;% end %&gt;
+</code></pre></div></div>
+
+<p>However, the above <code class="highlighter-rouge">select</code> won’t work for us for two reasons. First, ActiveRecord will complain that there is no <code class="highlighter-rouge">FROM</code> clause for the <code class="highlighter-rouge">projects</code> table. We can solve this with a call to <code class="highlighter-rouge">joins</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(:projects).select('users.email, (projects.created_at - users.created_at)....')
+</code></pre></div></div>
+
+<p>Second, the above statement compares the creation times of <em>all</em> of a given users’ projects to <code class="highlighter-rouge">User#created_at</code>. We only care about the earliest project, so we can narrow this down with a call to <code class="highlighter-rouge">where</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(:projects)
+    .where('projects.created_at = (SELECT MIN(projects.created_at) FROM projects WHERE projects.user_id = users.id)')
+    .select("users.email, (projects.created_at - users.created_at) as time_to_first_project")
+</code></pre></div></div>
+
+<p>Because a user’s earliest project’s <code class="highlighter-rouge">created_at</code> varies with the user, we retrieve this timestamp by passing in the aggregator function <code class="highlighter-rouge">MIN()</code> to a nested <code class="highlighter-rouge">SELECT</code> function (nested in this case within the first <code class="highlighter-rouge">select</code>). This nested <code class="highlighter-rouge">SELECT</code> function is also known as a “sub-query”.</p>
+
+<p>This will return a collection of <code class="highlighter-rouge">ActiveRecord</code> objects with the attributes <code class="highlighter-rouge">email</code> and <code class="highlighter-rouge">time_to_first_project</code>. Because we’re subtracting two timestamps, <code class="highlighter-rouge">time_to_first_project</code> will be an “interval”.</p>
+
+<p><a href="https://www.postgresql.org/docs/9.4/static/datatype-datetime.html">Intervals in Postgres</a> are the largest datatype available for storing time and consequently contain a lot of detail. If you inspect <code class="highlighter-rouge">time_to_first_project</code> for a few records, you’ll notice that they look something like: <code class="highlighter-rouge">"00:18:43.082321"</code> or <code class="highlighter-rouge">"9 days 12:48:48.220725"</code>, which means you might have to do a bit of parsing and/or decorating before you present the information to the user.</p>
+
+<p>Postgres also makes available the <code class="highlighter-rouge">AGE(..)</code> function, to which you can pass in 2 timestamps and get an interval. If you pass in one timestamp to <code class="highlighter-rouge">AGE()</code>, you’ll get back the difference between the current date (at midnight) and the passed-in timestamp.</p>
+
+<p>If you have two timestamps and you want find the number of days between them, then you can use the <code class="highlighter-rouge">CAST</code> function to take advantage of the fact that when you subtract two dates you get the days between them. We’ll come back to <code class="highlighter-rouge">CAST</code> in a little bit.</p>
+
+<h2 id="comparison-and-filtering">Comparison and Filtering</h2>
+
+<p>Next, we want a list of users who took longer than 1 month to create a project. Ideally, we’d want to be able to get a list of users who took longer than any arbitrary period of time to create a project. This operation boils down to a ‘greater-than’ comparison between <code class="highlighter-rouge">time_to_first_project</code> and the time period we pass in (1 month for example). Postgres supports the comparison of dates and times to each other. In this case, since <code class="highlighter-rouge">time_to_first_project</code> is an interval, we have to make sure that we compare it to an interval in our call to <code class="highlighter-rouge">where</code>. This means that if we do:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users.where("(projects.created_at - users.created_at) &gt; 30")
+</code></pre></div></div>
+
+<p>Postgres will complain that the operator to compare an interval and integer doesn’t exist. To get around this, we have to ensure that the right hand side of the comparison is an interval. We do this with the <a href="https://www.postgresql.org/docs/9.4/static/sql-syntax-lexical.html#SQL-SYNTAX-CONSTANTS-GENERIC"><code class="highlighter-rouge">INTERVAL</code> type keyword</a>. We’d use it in this way:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(:projects)
+    .where('projects.created_at = (SELECT MIN(projects.created_at) FROM projects WHERE projects.user_id = users.id)')
+    .where("(projects.created_at - users.created_at) &gt; INTERVAL '1 month'")
+    .select(...)
+</code></pre></div></div>
+
+<p>As you can see, we can pass in a human readable string like “1 month” to <code class="highlighter-rouge">INTERVAL</code>, which is nice.</p>
+
+<h2 id="aggregations">Aggregations</h2>
+
+<p>Next on the list, we want to calculate the average amount of time it takes to create a project. Given what know so far, this won’t require much explanation. Our query will look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(:projects)
+    .where('projects.created_at = (SELECT MIN(projects.created_at) FROM projects WHERE projects.user_id = users.id)')
+    .select("AVG(projects.created_at - users.created_at) as average_time_to_first_project")
+</code></pre></div></div>
+
+<p>We’re using the <code class="highlighter-rouge">AVG()</code> function and our query will return one <code class="highlighter-rouge">User</code> object on which we can call <code class="highlighter-rouge">average_time_to_first_project</code>.</p>
+
+<p><code class="highlighter-rouge">ActiveRecord</code> also has available the <code class="highlighter-rouge">average</code> function, which we can call like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(...)
+    .where(...)
+    .average('projects.created_at - users.created_at)
+</code></pre></div></div>
+
+<p>This query’s return value will be a <code class="highlighter-rouge">BigDecimal</code>, and because of this we might lose some information. For example, if the true average is <code class="highlighter-rouge">INTERVAL "1 day 23:00:01.2234"</code>, the <code class="highlighter-rouge">BigDecimal</code> value will be <code class="highlighter-rouge">1</code>.</p>
+
+<p>Finally, what if we want to calculate the average time between project creation for each user?</p>
+
+<p>The average time between projects for a user is the average of the difference between consecutive <code class="highlighter-rouge">Project#created_at</code> values. So for example, if there are three projects, the average time between projects is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"((project3#created_at - project2#created_at) + (project2#created_at - project1#created_at))/2"
+</code></pre></div></div>
+
+<p>This is equal to <code class="highlighter-rouge">(project3#created_at - project1#created_at) / 2</code>. For <code class="highlighter-rouge">N</code> projects, the average time between projects is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"(projectN#created_at - project1#created_at) / (N - 1)"
+</code></pre></div></div>
+
+<p>In our example, “projectN” corresponds to the user’s latest project and therefore its creation date is equal to <code class="highlighter-rouge">MAX(projects.created_at)</code>. Similarly, the user’s earlier project creation date corresponds to <code class="highlighter-rouge">MIN(projects.created_at)</code>. The number of projects is calculated with <code class="highlighter-rouge">COUNT(projects)</code>.</p>
+
+<p>For our output, let’s say we want the average time between projects to be reported in number of days. Since subtracting two dates in Postgres returns an integer number of days, we can obtain the average time between projects in days by first casting <code class="highlighter-rouge">MAX(projects.created_at)</code> and <code class="highlighter-rouge">MIN(projects.created_at)</code> to dates, subtracting them and then dividing by <code class="highlighter-rouge">COUNT(projects) - 1</code>. In Postgres, we can cast our timestamps with the <code class="highlighter-rouge">CAST</code> function. For example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CAST(MIN(projects.created_at) as date)
+</code></pre></div></div>
+
+<p>will convert the created_at timestamp to a date.</p>
+
+<p>Finally, we want this calculation to be performed once for every user. For this, we have to use the <code class="highlighter-rouge">group</code> method, which corresponds to the <code class="highlighter-rouge">GROUP BY</code> clause. We need this clause because if we didn’t have it, the calculation will be performed only once for the entire set of projects, rather than for every user.</p>
+
+<p>Our query will look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User.joins(:projects)
+    .group('users.email')
+    .having('COUNT(projects) &gt; 1')
+    .select("(CAST(MAX(projects.created_at) as date) - CAST(MIN(projects.created_at) as date))/(COUNT(projects) - 1) as avg_time_between_projects, users.email as email")
+</code></pre></div></div>
+
+<p>You’ll also notice that I’ve included a call to <code class="highlighter-rouge">.having('COUNT(projects) &gt; 1')</code>. This ensures that only users who have more than one project are considered.</p>
+
+<h2 id="where-should-we-put-this-stuff-in-our-codebase">Where should we put this stuff in our codebase?</h2>
+
+<h3 id="in-the-database">In the database</h3>
+
+<p>It can be beneficial to have this SQL reside in the DB instead of in your application layer. You can make this happen with views. A “view” is a stored query which we can query just as we would a table. As far as ActiveRecord is concerned, there is no difference between a view and a table.</p>
+
+<p>The idea is that by creating a view with the user’s email and the fields we’re interested in, like average time between projects and time taken to create the first project, our application code will be cleaner because we can now say something like <code class="highlighter-rouge">UserReport.where('average_time_between_projects &gt; ?', 30.days)</code> instead of “all the SQLs”.</p>
+
+<p>To create a view, first create a migration like so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def change
+  sql = &lt;&lt;-SQL
+    CREATE VIEW user_reports AS
+    SELECT (CAST(MAX(packages.created_at) as date) - CAST(MIN(packages.created_at) as date))/(COUNT(packages)-1) as time_between_projects, COUNT(packages) as count, users.email as email FROM \"users\" INNER JOIN \"packages\" ON \"packages\".\"user_id\" = \"users\".\"id\" WHERE \"users\".\"role\" = 'client' GROUP BY users.email HAVING COUNT(packages) &gt; 1    
+  SQL
+  execute(sql)
+end
+</code></pre></div></div>
+
+<p>The SQL I’ve used was generated by calling the <code class="highlighter-rouge">to_sql</code> method on the query we ran previously. Run the migration and then create a <code class="highlighter-rouge">UserReport</code> model class which inherits from <code class="highlighter-rouge">ActiveRecord::Base</code>. You should now be able do things like <code class="highlighter-rouge">UserReport.average('time_between_projects')</code>. You might also notice that results come back faster.</p>
+
+<p>There is one issue with this approach and that is that your schema file is not going to show this view. So if you want your CI to build correctly, you might have to change your schema option to generate sql instead. <a href="http://edgeguides.rubyonrails.org/active_record_migrations.html#types-of-schema-dumps">It’s pretty simple to do this with Rails</a>. The other caveat is that this introduces a cost to switching to a different database backend, because the SQL we now have in our migration is Postgres-specific.</p>
+
+<p>Here are some good resources on views:</p>
+
+<ol>
+  <li><a href="https://blog.pivotal.io/labs/labs/database-views-performance-rails">https://blog.pivotal.io/labs/labs/database-views-performance-rails</a></li>
+  <li><a href="http://blog.roberteshleman.com/2014/09/17/using-postgres-views-with-rails/">http://blog.roberteshleman.com/2014/09/17/using-postgres-views-with-rails/</a></li>
+  <li><a href="https://github.com/thoughtbot/scenic">The Scenic gem for views, which gets around the schema problem</a></li>
+</ol>
+
+<h3 id="in-the-application">In the application</h3>
+
+<p>If you don’t want to go the views route, you might consider organizing your queries with query objects and scopes. Have a look at <a href="http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/">this</a> for a brief introduction to query objects.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>With the information covered in this article, we can now begin to craft an answer for our hypothetical product manager, making the database server bear the brunt of the work. I’d now like to hear from you. Have you worked with time in ActiveRecord and your DB? If yes, how was the experience and what did you learn from it? Leave a comment below!</p>
+
+<p><strong>I’ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you’d prefer downloading and printing it out, <a href="http://ducktypelabs.com/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf">click here to get it!</a></strong></p>
+
+<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
+</div>

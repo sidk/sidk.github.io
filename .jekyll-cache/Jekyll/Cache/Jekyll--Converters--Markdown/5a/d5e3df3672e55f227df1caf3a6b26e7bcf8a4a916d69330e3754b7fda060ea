@@ -1,0 +1,94 @@
+I""&<p>This list is for you if:</p>
+
+<ul>
+  <li>You care about keeping your users safe and wonder what the best practices for web app authentication are.</li>
+  <li>You’re using or going to use JWTs (JSON Web Tokens) to perform authentication in your application.</li>
+</ul>
+
+<p>When it comes to security, a “working” system unfortunately does not guarantee your users’ safety. This can be true regardless of the “thing” you’re using to build your authentication system, JWTs or otherwise.</p>
+
+<p>JWTs have received and continue to receive a lot of positive and negative attention over the last few years. The pro-JWT camp touts benefits like statelessness, portability, a convenient interface and so on. The anti-JWT camp says JWT is a kitchen sink of crypto formats and maximizes the number of things that can go wrong.</p>
+
+<p><code class="highlighter-rouge">¯\_(ツ)_/¯</code></p>
+
+<p>In this post, I’ll take a pragmatic approach and attempt to draw up a list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you’re building authentication. Note that some of the items in this list apply regardless of if you’re using JWTs or not, and some are specific to JWTs.</p>
+
+<p>Note: To keep this article short, the scenarios I’m going to focus on all involve a front-end (run on a browser), user-facing application communicating with one or more servers to perform authentication.</p>
+
+<h2 id="not-having-a-strategy-for-session-invalidation-or-revocation">Not having a strategy for session invalidation or revocation</h2>
+
+<p>In this scenario, you have a front-end application which makes authentication requests to a server by sending it a username and password. The server verifies this username/password combination, generates a JWT and sends it back to the client. The client is then able to make further requests using the JWT, and the server verifies these requests by validating the signature on the JWT, and saves a database call that it would have otherwise had to make.</p>
+
+<p>There is a problem with this approach, however. A JWT is valid as long as:</p>
+
+<ol>
+  <li>It hasn’t expired yet, and</li>
+  <li>It has a valid cryptographic signature</li>
+</ol>
+
+<p>If you’re ever in a situation where you want to reject requests made with a valid JWT, you’ll need to have a strategy and corresponding infrastructure/app behaviour in place. A common scenario often cited is when a malicious account with a valid JWT needs to be blocked from making any further requests to your servers.</p>
+
+<p>There are a few options at your disposal to address this particular situation if you think it’s something to be addressed. Having a low expiry period and a longer lived “refresh” token, maintaining a “deny list” in some external store, changing the signing key, and potentially others. Every option comes with its own set of trade-offs, so do take the time to research them and understand what you’re giving up and what you’re gaining.</p>
+
+<h2 id="putting-sensitive-data-in-the-jwt">Putting sensitive data in the JWT</h2>
+
+<p>A typical JWT looks like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre></div></div>
+
+<p>Though this looks illegible, it is actually very readable because it’s a plain text JSON object <a href="https://en.wikipedia.org/wiki/Binary-to-text_encoding">encoded</a> using base64. For every piece of information you decide to put in your JWT, ask yourself: How much damage would it cause if this gets into the wrong hands?</p>
+
+<p>Two common remediations for having sensitive data in the JWT are:</p>
+
+<ol>
+  <li>Stop putting sensitive data in there.</li>
+  <li>If you really need to have sensitive data, encrypt your JWT.</li>
+</ol>
+
+<p>Needless to say, there are trade-offs with both approaches, which neccessitates you having a good think about what your requirements are. For example, with option 1, you might have to change your application architecture and perhaps incur a lookup cost. Option 2 on the other hand, adds the complexity of having to encrypt something and thinking about where and how it will be decrypted.</p>
+
+<h2 id="not-guarding-against-csrf-cross-site-request-forgery">Not guarding against CSRF (cross-site request forgery)</h2>
+
+<p>In this scenario, your front-end app stores the JWT in a cookie (with no protections on it) and your server authenticates requests by parsing the cookie and performing a JWT validation check on it. If a user has your app open in a browser tab and happens upon a malicious web site in another tab, this web site can make authenticated requests to your web app because the browser will automatically include any cookies associated with your web app’s domain. This is known as cross-site request forgery, and you’ll want to <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery#Prevention">guard against it</a>. A common solution is for your server to include a CSRF token in its responses and require that any requests made to it also contain a matching token, the main idea being that a malicious script would have no way of knowing what this token is and therefore have its requests blocked.</p>
+
+<p>If you’re using a framework like Rails or Express, the chances are high that the framework will include options that you can use to protect your users against CSRF, using one or more of the ways detailed in the Wikipedia link above.</p>
+
+<p><em>Related:</em> You’ll also want to set the <code class="highlighter-rouge">httpOnly</code> and <code class="highlighter-rouge">secure</code> flags on your cookies. <code class="highlighter-rouge">httpOnly</code> prevents malicious scripts from accessing and potentially exfiltrating the contents of your JWT (in the context of an <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">XSS</a> attack) and <code class="highlighter-rouge">secure</code> ensures that cookies will not be sent across the wire unless the <a href="https://en.wikipedia.org/wiki/HTTPS">https</a> protocol is being used.</p>
+
+<h2 id="storing-the-jwt-in-local-storage">Storing the JWT in local storage</h2>
+
+<p>Since cookies typically have a 4kb storage limit, you might reason that a JWT that contains more information could be stored in local storage instead.</p>
+
+<h3 id="local-storage-is-not-protected-against-xss">Local storage is not protected against XSS</h3>
+
+<p>If you have an XSS vulnerability, a malicious script could easily exfiltrate the contents of local storage to anywhere it chooses to, allowing the attacker to impersonate the user at their convenience. A common counterpoint to this argument is that in the event of an XSS attack against an app that stores its JWT in a cookie, an attacker would still be able to make authenticated requests since <code class="highlighter-rouge">httpOnly</code> and <code class="highlighter-rouge">secure</code> do nothing to prevent this. This is true, but it is arguably more secure because it limits the attacker to carrying out specific attacks only when the user is actively using the app, or has it open in a tab somewhere.</p>
+
+<p>I’d bias towards choosing the more secure option in this case (and also do my best not to introduce XSS vulnerabilities!).</p>
+
+<h2 id="choosing-an-asymmetric-encryption-algorithm-without-a-good-reason">Choosing an asymmetric encryption algorithm without a good reason</h2>
+
+<p>I’m not a security expert, so take this point with a grain of salt. From the research I’ve done so far, RSA (the most commonly used crypto algorithm to asymmetrically sign JWTs) is hard to get right and can have subtle implementation bugs. Cryptographers with way more knowledge than me have recommended <a href="https://latacora.singles/2018/04/03/cryptographic-right-answers.html">against</a> <a href="https://latacora.micro.blog/2019/07/24/how-not-to.html">it</a></p>
+
+<p>Unless you have a really good reason for choosing asymmetric/public key encryption, choose HS256 (HMAC-SHA256) as your algorithm. If you’re building a system where a third party needs to be able to validate a signature but not be able to generate one (what folks typically use asymmetric encryption in a web app for), consider an API where the third party can ask the secret holder if a given signature is valid.</p>
+
+<p>Also don’t allow “None” as one of the algorithm choices 🙂</p>
+
+<p>To learn more about how these algorithms work and how they can be exploited, I highly recommend <a href="https://cryptopals.com/sets/6">the cryptopals challenges</a>!</p>
+
+<hr />
+
+<p>Happy learning and building! As always, let me know what you think in the comments below. If you liked what you read, make sure to drop your email in the form below and I’ll send you new articles when I write them.</p>
+
+<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
+</div>
+
+<h2 id="recommended-reading">Recommended Reading</h2>
+
+<ul>
+  <li><a href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/">http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/</a></li>
+  <li><a href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/">http://cryto.net/~joepie91/blog/2016/06/19/stop-using-jwt-for-sessions-part-2-why-your-solution-doesnt-work/</a></li>
+</ul>
+
+<p>I highly recommend giving these a read to further understand what could go wrong when using JWTs, so you’re best prepared to understand the trade-offs and design/build a secure system.</p>
+:ET

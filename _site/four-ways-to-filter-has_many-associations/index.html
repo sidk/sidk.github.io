@@ -1,0 +1,98 @@
+<p>You have a model that <code class="highlighter-rouge">has_many</code> associations, and you’d like to get a collection of these models with their associations that satisfies a list of conditions both on the model and the association records. You’ve tried a few things, but whatever you’ve tried only “sort of” works (meaning, not really) and leaves you feeling like you need a push in the right direction.</p>
+
+<p>Filtering <code class="highlighter-rouge">has_many</code> associations can be one of those problems which makes you scratch your head and want to do some extra reading to brush up on your <code class="highlighter-rouge">SQL</code> and <code class="highlighter-rouge">ActiveRecord</code> knowledge.</p>
+
+<p>For example, let’s say you have <code class="highlighter-rouge">User</code> and <code class="highlighter-rouge">Project</code> models in your system, and you want to write a query that retrieves a collection of <code class="highlighter-rouge">users</code> with <code class="highlighter-rouge">projects</code> that were created in a given date range.</p>
+
+<p>Depending on what you want your query to return, here are 4 different ways to approach this problem:</p>
+
+<ol>
+  <li>
+    <p>The simplest thing you can do is to combine the <code class="highlighter-rouge">joins</code> and <code class="highlighter-rouge">where</code> methods that <code class="highlighter-rouge">ActiveRecord</code> gives you, like so:</p>
+
+    <p>User.joins(:projects).where(projects: { zipcode: 30332 })</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This technique is a good choice when you need to filter your records by one or more attributes. This will give you back a collection of `User` records which all have projects with a zipcode of 30332.
+
+One gotcha to keep in mind is that since you&amp;#8217;re doing a `INNER JOIN` with the `joins` method, **this can return duplicates**. Read on to point 2 to see how you can get around this.
+</code></pre></div></div>
+
+<ol>
+  <li>More often than not, you might have scopes defined on your association models which you want to re-use. So when you want to use these scopes to do your filtering, get acquainted with <code class="highlighter-rouge">ActiveRecord's</code> <code class="highlighter-rouge">merge</code> function. According to the <a href="http://apidock.com/rails/ActiveRecord/SpawnMethods/merge"><code class="highlighter-rouge">ActiveRecord</code> documentation</a>, <code class="highlighter-rouge">merge</code> returns an array representing the intersection of the <code class="highlighter-rouge">ActiveRecord::Relation</code> that you call <code class="highlighter-rouge">merge</code> on, and the <code class="highlighter-rouge">ActiveRecord::Relation</code> that you pass in.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>So, for example, if you have a scope in your `Project` model called `opened_recently`, which returns all `projects` which have been created within the last 10 days, you can do something like:
+
+    User.joins(:projects).merge(Project.opened_recently)
+    
+
+This will return to you a list of `User` objects which all satisfy the condition of having projects which were opened recently.
+
+Like I said before, one thing to keep in mind when you&amp;#8217;re using `joins` for a `has_many` association is that since you are doing an `INNER JOIN`, **it is possible that you will get back duplicate `User` (in our example) objects** &amp;#8211; basically one object for every &amp;#8216;match&amp;#8217;. It&amp;#8217;s easy enough to get around this with a call to the `uniq` method.
+
+    User.joins(:projects).merge(Project.opened_recently).uniq
+    
+
+The `uniq` method works by changing your query from something like ``SELECT `users` from ...`` to something like ``SELECT DISTINCT `users` from...``
+</code></pre></div></div>
+
+<ol>
+  <li>If you’re going to be needing to retrieve information from the records you filter, especially information stored in the associations of these records, another option to consider is <a href="http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations">eager loading and the <code class="highlighter-rouge">includes</code> method</a>. As you probably know, the benefit of eager loading is that you get to avoid the N + 1 queries problem.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>It&amp;#8217;s pretty straightforward to filter by attributes or scopes on the association:
+
+    User.includes(:projects).where(projects: { zipcode: '30332' })
+    
+
+This will give us all `users` who have projects in Atlanta, and also eager load their projects.
+
+If in your `.where` you want you use an SQL fragment, then you need to call the [`references`](http://apidock.com/rails/ActiveRecord/QueryMethods/references) method:
+
+    User.includes(:projects).where('projects.deleted_at IS NOT NULL').references(:projects)
+    
+
+You can also use the `merge` method in conjunction with `includes` and `references` to make use of any scopes you might have defined in your association models, like so:
+
+    User.includes(:projects).merge(Project.opened_recently).references(:projects)
+    
+
+You won&amp;#8217;t need to use `uniq` when you use `includes` because `ActiveRecord` will take care of it for you automatically.
+</code></pre></div></div>
+
+<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
+</div>
+
+<ol>
+  <li>Now, what should you do if you want your collection to only have those associations which meet your filter criteria? This situation arose for me when I had to write an API endpoint which let app users pass in parameters to filter associations. There are a couple of ways you can approach this. In my case, since I had to return an object that would eventually be converted to JSON, the simplest way was to manually construct a hash which contained the record and the filtered associations.</li>
+</ol>
+
+<p>So I did something like this in my controller:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def show 
+  user_attributes.merge(projects: filtered_projects) 
+end
+
+
+def user_attributes 
+  # returns a hash containing attributes for the given user 
+  # something like this: # { id: 1, first_name: 'Rick', last_name: 'Sanchez' } 
+end
+
+def filtered_projects 
+  # here's where I used any Project related params to filter down my projects 
+  # something like Project.opened_after(params[:project_date]).as_json 
+  # I use as_json because I need this method to return a hash 
+end
+</code></pre></div></div>
+
+<p>Note that the <code class="highlighter-rouge">merge</code> method used here is the one for <code class="highlighter-rouge">Hash</code>, and not the <code class="highlighter-rouge">ActiveRecord</code> method. You should be able to extend this to return multiple users as well.</p>
+
+<p>Another way to do this is by defining a scoped <code class="highlighter-rouge">has_many</code> association. If you’re interested in seeing how this might be done, ping me in the comment section below and I’ll do a post on this topic specifically.</p>
+
+<p>Hope this was helpful. As always, if you have a question about this topic that isn’t specifically addressed above, leave a comment below, and I’ll do my best to help out!</p>
+
+<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
+</div>

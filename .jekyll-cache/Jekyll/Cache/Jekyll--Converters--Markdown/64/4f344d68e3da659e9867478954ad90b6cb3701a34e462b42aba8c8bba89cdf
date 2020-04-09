@@ -1,0 +1,81 @@
+I"�<p>When you’re beginning to work with Rails and ActiveRecord, it can be tough to wrap your head around the concept of has_many :through associations, and more importantly how they can be used in your Rails app.</p>
+
+<blockquote>
+  <p>“lets say i have group, member, memberships…how do i then actually USE this in my models, controllers and views?”</p>
+
+  <p>“I’m using a has_many :through relationship which appears to be working. I now need a form that I can render to have users join or leave the group.”</p>
+</blockquote>
+
+<p>First off, you should be reasonably confident that a has_many :through association is a good choice for your app design. Assuming you are, here’s how you can put it into practice.</p>
+
+<p>Let’s say you’re building an app with Users and Groups, and you want to build a form where a given user can join or leave any group. You’ve chosen to associate your users and groups through the table Membership.</p>
+
+<p>Your models are structured like so:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class User &lt; ActiveRecord::Base
+  has_many :memberships
+  has_many :groups, through: :memberships
+end
+
+class Group &lt; ActiveRecord::Base
+  has_many :memberships
+  has_many :users, through: :memberships
+end
+
+class Membership &lt; ActiveRecord::Base
+  belongs_to :user
+  belongs_to :group
+end
+</code></pre></div></div>
+
+<p>I always find it helpful before I start writing my controllers or views, to think through what I want to accomplish, and use the Rails console to ensure I’m on the right path. In other words, I try to come up a with an end-goal, and then work backwards with the help of the Rails console to figure out my solution.</p>
+
+<p>So, given that we want to render a form that allows a user to join or leave a group, we should ask ourselves, “what does it mean to have a user <em>join</em> a group?”</p>
+
+<p>As far as the database is concerned, it essentially means that the <code class="highlighter-rouge">Membership</code> table will have a row with the <code class="highlighter-rouge">user_id</code> and <code class="highlighter-rouge">group_id</code> columns corresponding to our given user and group. Our task then is to orchestrate things such when the user clicks ‘submit’ on their form, the <code class="highlighter-rouge">Membership</code> table ends up with a new row (or rows) with the correct <code class="highlighter-rouge">user_id</code> and <code class="highlighter-rouge">group_id</code> values.</p>
+
+<p>In the form/view that we render for the user, we need a way whereby the user can select which groups they want to join. And in the controller, we want to extract the choices that the user made in the form and use those choices to create new rows in the <code class="highlighter-rouge">Membership</code> table.</p>
+
+<p>First, imagine you had a <code class="highlighter-rouge">user_id</code> and a <code class="highlighter-rouge">group_id</code>, how would you go about creating that new row in the Membership table? ActiveRecord makes it easy. What we want to do is, for a given <code class="highlighter-rouge">User</code> record, add a ‘membership’ to it, so that when we say <code class="highlighter-rouge">@user.groups</code>, we get back a list of groups which includes the group we just added. If you do this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#assuming @user is your User record
+@user.groups &lt;&lt; Group.find(group_id)
+
+#if you have a list of group_ids(something like [1, 2]), you can also do:
+@user.group_ids &lt;&lt; group_ids
+</code></pre></div></div>
+
+<p>This piece of code will automagically create a new row in the Membership table with the right <code class="highlighter-rouge">group_id</code> and <code class="highlighter-rouge">user_id</code>. And now whenever you use <code class="highlighter-rouge">@user.groups</code>, you will get back a list of groups that you added. For added confidence, try the above in your Rails console.</p>
+
+<p>Check out the Rails guide below for <a href="http://guides.rubyonrails.org/association_basics.html#the-has-many-through-association">more details</a> on what methods ActiveRecord provides you when you use <code class="highlighter-rouge">has_many :through</code>.</p>
+
+<p>I’m going to assume you have some type of authentication set up in your app, which gives you access to the <code class="highlighter-rouge">current_user</code> method. We will need this method to get our <code class="highlighter-rouge">user_id</code>, via a simple <code class="highlighter-rouge">current_user.id</code> call. Once you have your user (with something like <code class="highlighter-rouge">@user = User.find(current_user.id)</code>), you can use the code above to add groups.</p>
+
+<p>The next question is, how do you write your view such that it passes the <code class="highlighter-rouge">group_id</code> values to the controller?</p>
+
+<p>How you write your view will depend wholly on the flow you expect your users to go through and other factors in your app. Let’s say you decide to provide your user with a list of checkboxes listing the groups they can join or leave. Here’s a simple way to accomplish that:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% Group.all.each do |group| %&gt;
+  &lt;%= check_box_tag "user[group_ids][]", group.id, @user.group_ids.include?(group.id) %&gt;
+  &lt;%= group.name %&gt;
+  &lt;br /&gt;
+&lt;% end %&gt;
+</code></pre></div></div>
+
+<p>The usage of <code class="highlighter-rouge">check_box_tag</code> probably needs some explanation.</p>
+
+<p>The first parameter <code class="highlighter-rouge">"user[group_ids][]"</code> tells Rails to group all the checkboxes with this ID together and pass it in to the controller as an Array. What this means is in your controller, you can do <code class="highlighter-rouge">params[:user][:group_ids]</code> and get a nice Ruby Array of all the <code class="highlighter-rouge">group_ids</code> that the user chose.</p>
+
+<p>The last parameter just ensures that any Group which the user currently belongs to is checked when the form is rendered.</p>
+
+<p>The above should get you going with using has_many :through in your Rails app, but depending on what your app does I’m pretty sure you will run into issues which are not covered in this post. So if you’re still stuck, check out the following:</p>
+
+<p>1) Check out <a href="http://railscasts.com/episodes/17-habtm-checkboxes-revised">this amazing Rails cast</a> which takes you through the entire gamut of using has_many :through. If you haven’t already, I’d highly recommend you get yourself an account on RailsCasts.</p>
+
+<p>2) <a href="http://guides.rubyonrails.org/association_basics.html#the-has-many-through-association">Rails ActiveRecord Guide on has_many :through</a></p>
+
+<p>If you need more help, hit reply in the comment section below, and I’ll do my best to get you going.</p>
+
+<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
+</div>
+:ET

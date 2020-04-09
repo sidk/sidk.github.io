@@ -1,0 +1,201 @@
+I"�G<p><strong>Does this sound familiar? </strong></p>
+
+<p>You want to build new features to grow and improve your business, but you’re noticing that the time taken to develop them is gradually increasing. This causes missed deadlines and frustration amongst your team.</p>
+
+<p>Not only that, when a new feature does get built, it causes other parts of your app to break, leaving your team in a scramble to deploy non-optimal hot fixes so your users and clients are not affected.</p>
+
+<p>Hot fixes, which once deployed, are never refactored and cleaned up.</p>
+
+<h3 style="color: #d0194b; margin-bottom: 1em;">
+  Unfortunately, this leaves your codebase more fragile and harder (read <strong>“more bugs”</strong>) to work on than before.<br />
+</h3>
+
+<p>Now, you’re more than familiar with technical debt. You realize that though it can make business sense to incur technical debt (perhaps to meet an important deadline), letting your debt get out of control can easily cripple most of your future development efforts. However, you also know that getting rid of technical debt is a “hard problem”, in more ways than one.</p>
+
+<p>Your team need to be well-versed in the techniques needed to refactor a legacy code base. They also need to be able to get the codebase to a point where it can be refactored in the first place by ensuring a high level of test coverage. This can be hard to do depending on how inflection and change points are distributed in your system. Perhaps just as important, because your business is growing, your team is focusing on new feature development and simply do not have the time to exclusively make payments on technical debt in your system.</p>
+
+<p>You’re looking to get some outside help, but you’re unsure if someone can come in, learn the domain knowledge specific to your business and make your codebase better without disrupting your team’s workflow.</p>
+
+<h2 id="you-need-a-way-to-accelerate-your-teams-development-cycle-so-you-can-get-more-features-out-the-door-and-into-waiting-customers-hands">You need a way to accelerate your team’s development cycle, so you can get more features out the door and into waiting customers’ hands.</h2>
+
+<h2 id="you-also-need-to-get-a-handle-on-your-technical-debt-to-ensure-it-doesnt-spiral-out-of-control">You also need to get a handle on your technical debt to ensure it doesn’t spiral out of control.</h2>
+
+<hr />
+
+<p><img src="http://ducktypelabs.com/wp-content/uploads/2016/01/screenshot.png" alt="clean-code-vs-legacy-code" width="634" height="430" class="alignnone size-full wp-image-234" srcset="https://ducktypelabs.com/wp-content/uploads/2016/01/screenshot.png 634w, https://ducktypelabs.com/wp-content/uploads/2016/01/screenshot-300x203.png 300w" sizes="(max-width: 634px) 100vw, 634px" /></p>
+
+<hr />
+
+<p>You might be wondering if investing the time to get a handle on technical debt in your Rails app is worth the effort. It’s all well and good to have a codebase that your developers love working on, but what’s the point if it doesn’t move the needle on metrics that matter most to you and your business?</p>
+
+<p>In other words, how exactly will this <strong>benefit your business?</strong></p>
+
+<h2 id="new-features-will-be-pushed-out-the-door-faster-and-cheaper">New features will be pushed out the door faster and cheaper</h2>
+
+<p>Technical debt slows your ability to deliver new features, and this lack of speed results in an opportunity cost for lost revenue. By investing the time and resources to refactor and “pay down” the debt, your codebase will be easier to change in the future. This directly translates to a lower cost per feature and enables your team to move faster.</p>
+
+<h2 id="reduced-bug-rate">Reduced bug rate</h2>
+
+<p>A high bug rate is a two-headed monster. Firstly, your users will be displeased. On top of that, your developers and the rest of the team will have to divert their limited attention to fixing bugs and handling support requests. In most cases, bugs are directly or indirectly a result of technical debt not paid in full. You’ll find that your bug rate goes down when your codebase is well-factored and your technical debt is under control.</p>
+
+<h2 id="increased-developer-productivity">Increased developer productivity</h2>
+
+<p>A well-factored codebase greatly increases developer productivity and happiness. Happy and productive developers will often be more innovative in their approach and spend more time working on features that are important to the business (read “revenue generating” and/or “cost saving”) and less time chasing down intermittent and catastrophic bugs.</p>
+
+<p>Not only that, existing performance issues and bugs <strong>become way easier and faster to debug and fix</strong>.</p>
+
+<h2 id="improved-stability">Improved Stability</h2>
+
+<p>Increased stability in your application and infrastructure means more time spent helping your customers “kick ass” and less time waking up at 4 am to restart the servers because of a memory leak.</p>
+
+<p>Ultimately, you’ll find that with a well-organized codebase and development process, your business will be able to evolve sustainably with changing business requirements. Your developers will be able to take on bigger challenges and confidently build the systems that will power and grow your business for years to come.</p>
+
+<h3 style="color: #d0194b; margin-bottom: 1em;">
+  It’s time to ensure that your development process and codebase amplify your business objectives, rather than get in the way.<br />
+</h3>
+
+<p>Here’s how I can help…</p>
+
+<div id="wp_cta_271_container" class="wp_cta_container cta_outer_container" style="margin-top:0px;margin-bottom:0px;position:relative;">
+  <div id="wp_cta_271_variation_0" class="inbound-cta-container wp_cta_content wp_cta_variation wp_cta_271_variation_0" style="display:none; margin:auto; width: px; height: px;" data-variation="0" data-cta-id="271">
+    <div id="cta_container">
+      &#13; <span id="main-headline">Get a ready-to-use roadmap for exactly how to "pay down" technical debt in your Rails app</span>&#13; &#13; 
+      
+      <div class="cta_content">
+        &#13; Schedule your first 1 hour call with me, and get started on the journey to a better codebase.&#13;
+      </div>&#13; &#13; 
+      
+      <a id="cta-link" href="https://ducktypelabs.com/inbound/9in1olb65" rel="nofollow">&#13; <span class="cta_button">Yes, I want to rescue my Rails app</span>&#13; </a>&#13; &#13;
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<p>A Rails Code Audit identifies, via a step-by-step process, exactly what you need to do to get a handle on technical debt in your Rails application. It will start off by determining the current health of your application and what it does well. Then, it will go on to diagnose the problems your application has and outline a set of strategies, techniques and tactics you can use to fix these problems for the long term, while ensuring minimal disruption to how your team currently operates. Finally, you will have the option to engage with me for a longer term so I can personally help you and your team get a handle on your technical debt.</p>
+
+<p>Your Code Audit will be unique to you and your business, and be tailored to your unique development process.</p>
+
+<h2 id="rails-code-audit-a-4-step-process">Rails Code Audit: A 4-step process</h2>
+
+<p><a href="http://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps.png"><img src="http://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps-1024x285.png" alt="Rails Code Audit Steps" width="698" height="194" class="alignnone size-large wp-image-314" srcset="https://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps-1024x285.png 1024w, https://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps-300x84.png 300w, https://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps-768x214.png 768w, https://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps-698x194.png 698w, https://ducktypelabs.com/wp-content/uploads/2016/01/RCASteps.png 1719w" sizes="(max-width: 698px) 100vw, 698px" /></a></p>
+
+<h3 id="step-1--assessment--goal-setting">Step 1 – Assessment &amp; Goal Setting</h3>
+
+<p>First, we’ll block out 1 hour to talk face-to-face and dissect your development process and application at length.</p>
+
+<p>In order to help us prepare for this initial meeting, I’ll send you a short questionnaire designed to highlight the problems you’re having, and the goals you have for your business and codebase. I’ll also ask you to give me access to your codebase, and if possible, a login to your staging or production application.</p>
+
+<p>Once I have your answers, I’ll send you an invoice of $4,000, payment of which will serve as the official confirmation of our engagement. This $4,000 payment will cover the entire length of our engagement from Step 1 to Step 3. At the end of step 3, when I deliver my recommendations, you can choose to engage with me and have me implement my recommendations. I will do so in a way that will cause minimal disruption to your team’s workflow.</p>
+
+<p>After our first meeting, we’ll also schedule one or more follow-up interviews if I need to drill deeper. I will also be in regular touch via email.</p>
+
+<h3 id="step-2--inspect">Step 2 – Inspect</h3>
+
+<p>Once I have a good idea of where you’re looking to be, I’ll get to work with a thorough, line-by-line inspection of your codebase. I’ll start off by noting first what you and your team have done well, as I think it’s important to acknowledge the hard work that has gotten your company to where it is.</p>
+
+<p>Using tools like simplecov, rubocop, codeclimate and git, I will:</p>
+
+<ul>
+  <li>Assess test coverage throughout your app</li>
+  <li>Assess code quality throughout your app</li>
+  <li>Find out which areas of the codebase are changed the most</li>
+  <li>Assess code quality and test coverage of these areas</li>
+</ul>
+
+<p>Using the metrics established above, I’ll proceed to perform a visual inspection of your codebase, covering:</p>
+
+<ul>
+  <li>Models, Views and Controllers</li>
+  <li>Tests (with a focus on completeness and speed)</li>
+  <li>Database concerns (for example: checking for missing and/or superfluous indices)</li>
+</ul>
+
+<p>I’ll keep an eye out for any obvious security issues like outdated gems, handling third party credentials and others.</p>
+
+<p>I’ll also look at performance, as your end-user perceives it. Performance bottlenecks in Rails apps are often tied to how you handle things like caching, leverage services like CDNs and how your database is architected. It is very possible to get sub-100 ms performance with your Rails app!</p>
+
+<h3 id="step-3--recommend">Step 3 – Recommend</h3>
+
+<p>Once my analysis is complete, I’ll put together a multi-page report that will outline the results of my analysis in detail. The Code Audit report will contain customized recommendations covering all the areas described above, and specifically target the areas of your codebase that need the most work.</p>
+
+<h3 id="step-4-optional--implement">Step 4 (Optional) – Implement</h3>
+
+<p>If you and your team are strapped for time because you need to focus on new feature development, the report I generate for you probably wouldn’t be very useful on its own. Here’s where I can come in. I can gradually help you make inroads into getting a handle on your technical debt, by re-architecting your codebase in a bite-sized, atomic manner that cause minimal disruption to your team’s workflow. If needed, I can also help with implementing new features, with a focus on cleaning up the technical debt that I run into.</p>
+
+<p>As noted in the title, this step is optional – if you’re interested in having me implement the changes that I recommend, just let me know and we can discuss next steps.</p>
+
+<p>Steps 1 to 3 are intended to be a low-risk way for you to try out my services and assess for yourself if you’d like to engage me further.</p>
+
+<div id="wp_cta_271_container" class="wp_cta_container cta_outer_container" style="margin-top:0px;margin-bottom:0px;position:relative;">
+  <div id="wp_cta_271_variation_0" class="inbound-cta-container wp_cta_content wp_cta_variation wp_cta_271_variation_0" style="display:none; margin:auto; width: px; height: px;" data-variation="0" data-cta-id="271">
+    <div id="cta_container">
+      &#13; <span id="main-headline">Get a ready-to-use roadmap for exactly how to "pay down" technical debt in your Rails app</span>&#13; &#13; 
+      
+      <div class="cta_content">
+        &#13; Schedule your first 1 hour call with me, and get started on the journey to a better codebase.&#13;
+      </div>&#13; &#13; 
+      
+      <a id="cta-link" href="https://ducktypelabs.com/inbound/9in1olb65" rel="nofollow">&#13; <span class="cta_button">Yes, I want to rescue my Rails app</span>&#13; </a>&#13; &#13;
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<h2 style="text-align: center;">
+  &#8220;I have a few questions before I&#8217;m ready&#8230;&#8221;<br />
+</h2>
+
+<h3 id="what-are-your-qualifications">What are your qualifications?</h3>
+
+<p>I’ve written production software in various forms for more than 10 years. Before building web apps in Ruby, I wrote software in C and C++ that controlled the inner components of devices like TVs and game consoles. I also wrote desktop applications in Python to make building and testing these inner components (known as Integrated Circuits or ICs) easier. The web apps I’ve built with Rails cover a wide range and size of applications, from huge project management apps to MVPs. I’ve built greenfield production apps on my own and also worked on large legacy applications with multiple team members. I most recently worked on a large multi-platform project management app for a green energy fund (lots of fun with APIs!).</p>
+
+<p>Throughout that time, technical debt has been a constant companion. Especially in projects which have survived for more than a year. Sooner or later, it starts to cost more to make changes, which sucks because change is a constant in a successful &amp; long-lived project. Though I’ve lived through more than a couple of these, I’ve been lucky enough to have had smart and capable mentors showing me the way out. To ensure that a codebase remains a pleasure to work on requires a sensitivity to code smells, a toolkit with which to eradicate them and most importantly, a culture which encourages clean coding practices.</p>
+
+<p>I’ve spent years trying to avoid crappy code and I think I’ve been successful – that’s why I think I can help make your codebase and subsequently your business better.</p>
+
+<h3 id="the-term-technical-debt-can-mean-many-things-what-areas-do-you-specifically-cover-in-your-audit">The term “Technical Debt” can mean many things. What areas do you specifically cover in your audit?</h3>
+
+<p>In the context of a Rails app, technical debt makes its presence felt in a variety of areas. I’ll focus primarily on how your codebase is architected. By initially running your code through a series of tools, I hope to get a good sense of your code quality and the areas which need the most work. I’ll then dive deep into a manual analysis of your codebase, bringing to bear my experience in the software industry and with Ruby and Rails in particular. I’ll also keep an eye out for any obvious security and performance issues.</p>
+
+<h3 id="i-know-i-dont-need-a-full-rescue-read-im-not-drowning-but-could-use-advice-on-how-i-can-reduce-technical-debt-and-ensure-my-team-are-using-best-practices-so-that-we-dont-end-up-needing-a-rescue-will-the-rails-code-audit-be-useful-to-me">I know I don’t need a full rescue (read: “I’m not drowning”), but could use advice on how I can reduce technical debt and ensure my team are using “best practices” so that we don’t end up needing a rescue. Will the Rails Code Audit be useful to me?</h3>
+
+<p>Props to you for being pro-active in ensuring your app’s health. We can definitely work together! I’ll apply the same rigorous process in analyzing your codebase and practices, and at the end of our engagement you’ll get a set of concrete steps you can take to reduce your technical debt. I’ll also familiarize your team with practices that will go a long way in ensuring that your technical debt problem is contained.</p>
+
+<h3 id="i-have-more-questions">I have more questions</h3>
+
+<p><a href="mailto:krishnan.sid@gmail.com">Shoot me an email</a> with your questions, and I’ll get back to you ASAP.</p>
+
+<hr />
+
+<h2 style="text-align: center; color: #d0194b; margin-bottom: 1em;">
+  How I&#8217;ll make sure that you&#8217;re 100% satisfied with the Rails Code Audit<br />
+</h2>
+
+<p>My Rails Code Audits are borne from a career of building, maintaining and extending production quality software, both in and out of the Rails world, and bringing to bear this experience on your unique situation.</p>
+
+<p>That being said, I don’t want you to pay me and that be it. I want you to pay me and <strong>make a significant return on your investment</strong>, however you choose to measure it.</p>
+
+<p>But there’s rarely a “one size fits all” solution to anything. So if you do decide to buy the Rails Code Audit, and feel that it doesn’t get you any closer to where you want to be, then you can keep it and I’ll give you all your money back. No strings attached.</p>
+
+<p>This is my <strong>100% money back guarantee</strong>.</p>
+
+<hr />
+
+<h2 id="ready-to-reap-the-benefits-of-a-high-quality-rails-application">Ready to reap the benefits of a high quality Rails application?</h2>
+
+<p>I only commit to working on a few code audits at a time. This helps me offer the highest possible level of service while maintaining quick turnarounds.</p>
+
+<p>As of now, I have the availability to work on 3 new code audits.</p>
+
+<p>And when I say “I,” I do mean me, and only me. I’ll be your point of contact, and you’ll work directly and exclusively with me, start to finish.</p>
+
+<p>It’s okay to say no.</p>
+
+<p>This is only for businesses and teams who recognize that their approach to building Rails applications needs a change and are willing to learn and implement the processes, tools, habits and techniques needed to extend and maintain an existing Rails application for the long-term.</p>
+
+<p>Cheers!</p>
+
+<p>Sid Krishnan</p>
+:ET

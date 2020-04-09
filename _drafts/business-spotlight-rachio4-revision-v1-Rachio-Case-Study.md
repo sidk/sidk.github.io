@@ -1,0 +1,133 @@
+---
+id: 17
+title: Rachio Case Study
+date: 2015-06-19T16:47:41-04:00
+author: Sid
+layout: revision
+guid: http://ducktypelabs.com/index.php/2015/06/19/4-revision-v1/
+permalink: /4-revision-v1/
+---
+<div>
+  <div>
+    <em>Business Spotlight brings into focus highly innovative companies in the home automation space and deep dives into what makes these companies tick. We’ll explore the technologies they use, the challenges they face and often successfully solve, and try to gain an insight into what it takes to build and execute a game changing product.</em>
+  </div>
+</div>
+
+<div>
+  <em> </em>
+</div>
+
+<div>
+  <div>
+    Meet <a href="http://rachio.com/" target="_blank">Rachio</a>, the makers of the Iro, a smart sprinkler controller. Founded by an experienced team of software designers and engineers in response to drought conditions in the western US, the Iro is the culmination of relentless research & development into:<img class="alignnone size-medium wp-image-16" src="http://ducktypelabs.com/wp-content/uploads/2015/06/rachio-logo-for-web-300x78.png" alt="rachio-logo-for-web" width="300" height="78" srcset="https://ducktypelabs.com/wp-content/uploads/2015/06/rachio-logo-for-web-300x78.png 300w, https://ducktypelabs.com/wp-content/uploads/2015/06/rachio-logo-for-web-1024x265.png 1024w, https://ducktypelabs.com/wp-content/uploads/2015/06/rachio-logo-for-web-698x181.png 698w, https://ducktypelabs.com/wp-content/uploads/2015/06/rachio-logo-for-web.png 1800w" sizes="(max-width: 300px) 100vw, 300px" />
+  </div>
+  
+  <ul>
+    <li>
+      Understanding the best and most effective ways to manage water in the context of outdoor irrigation systems.
+    </li>
+    <li>
+      Building and deploying a sophisticated cloud architecture that is able to bring to bear years of irrigation research to the consumer&#8217;s home and,
+    </li>
+    <li>
+      Does so in a user-friendly way, such that the user is not overwhelmed.
+    </li>
+  </ul>
+</div>
+
+The outcome of this research is an irrigation controller that for the first time, is worthy of controlling access to one of your most precious resources. The Iro is not only easy to use with your smartphone app, but also knows exactly when and how much water to use depending on current and past weather conditions, the type of soil, the slope of your zone, the type of nozzle you have, the type of vegetation and many other variables, greatly increasing the efficiency of your irrigation system and saving costs substantially.
+
+**Why Rachio was founded**
+
+Rachio was started in the summer of 2012, by founders Chris Klein and Franz Garsombke. Chris and Franz were in the middle of a serious drought situation in Denver, Colorado when, inspired by a state-wide conversation on tearing out lawns and replacing them with vegetable gardens, they decided to look into how big of issue outdoor irrigation really was. Chris found that outdoor irrigation contributes to a significant amount of water waste in the US (about 8 billion gallons a day), and that for homes with lawns in particular, 50% of water usage went towards outdoor irrigation.
+
+After some research on the subject, and being software experts, they ultimately settled on asking the question, &#8220;What can software do to solve this problem?&#8221;
+
+**Exploration Phase**
+
+The first thing they explored was using a wireless outlet to which a standard irrigation controller could be plugged into. The idea was that via WiFi, they could turn the wireless outlet on and off and subsequently control the irrigation schedule. However, preliminary prototyping efforts with a <a href="http://www.belkin.com/us/Products/home-automation/c/wemo-home-automation/" target="_blank">WeMo</a> controller quickly tabled that idea. They found that the closed architecture of the WeMo did not lend itself well to a suitable solution.
+
+They then directed a couple of months worth of R&D effort into devising a solution that would not need any additional hardware, ie, something that would be purely software. In the end, they found there was no way around building hardware, so that&#8217;s what they did.
+
+**Biggest Challenges**
+
+According to Chris, Rachio&#8217;s biggest challenges during this early phase mainly concerned their entry into the hardware products space. Being a team of software experts building a hardware company, and the hardware business being a capital intensive one, they found that their initial lack of experience got in the way of raising funds. For example, to know how much funding they would need, they had to accurately model manufacturing costs considering the huge cost variability of various hardware components.
+
+Chris says that winning a state-wide competition for innovators and entrepreneurs was a turning point for Rachio. They not only won a substantial amount of prize money, but were also able to befriend a local manufacturer in the audience. Working out of their new friend&#8217;s plant they were able to build relationships that helped them successfully navigate the hardware space. All of Rachio&#8217;s manufacturing is based in Colorado, which Chris feels gives them a significant competitive advantage.
+
+**Pitfalls avoided**
+
+According to Chris, the obvious things like product-market fit, proof of concept, the relationships you build and the connections you make all play a role in ensuring success for your product and company to-be. Manufacturing in the US, with the manufacturing plant located about an hour away, allowed them to ramp up and down according to demand and remain fluid.
+
+Rachio also took a software first approach to build the product. Understanding that the hardware was essentially a shell and that any deficiencies in the software such as bad connections or inaccurate algorithms would be perceived by the consumer as a defective product was a key insight that helped Rachio maintain focus on building high quality software for the Iro.
+
+Rachio also benefited from Chris&#8217; background in construction systems management. His experience in building hard goods, commercial buildings and structures became increasingly relevant as they began to manufacture the Iro. Familiarity with managing subcontractors, exposure to lead times and the ways dependencies work in the hard goods world (more of a Waterfall approach, as opposed to Agile) all helped Chris and his team at Rachio when the time came to successfully and consistently make progress.
+
+**Tech Stack**
+
+The main components of Iro&#8217;s _brain _are comprised of:
+
+  1. The internal firmware, which resides on board the Iro
+  2. A mobile app, which the user uses to configure the Iro
+  3. The cloud app, which lives on Rachio&#8217;s servers and contains the bulk of Iro&#8217;s intelligence and business logic.
+
+**Firmware**
+
+The firmware that sits atop the Iro is lightweight in nature, and its main job is to maintain connection to the WiFi network and communicate back and forth with the Rachio cloud app. Communication to the Rachio app involves listening for instructions and reporting back on current status. The firmware also has the ability to continue irrigation and maintain a healthy yard if WiFi connection is lost.
+
+Rachio uses an <a href="https://electricimp.com/" target="_blank">Electric Imp</a> Wifi chip to run the firmware, and according to Chris the firmware is written in Squirrel, which is a &#8220;Javascript-y&#8221; language provided by Electric Imp. The firmware engineering team consists of a full-time firmware engineer, and Franz, Rachio&#8217;s co-founder and CTO.
+
+**Mobile App**
+
+The mobile app holds a key position in the Rachio ecosystem, by virtue of being the primary point of contact between the Iro and the user. When Chris and his team first designed the app, what made sense at the time was to design it so that the user felt like they were interacting with a piece of hardware.
+
+Chris remembers that getting the design right for the app the first time around was very difficult, owing to the fact that the Iro was one of the very first irrigation controllers to offer full configuration to the user via a mobile app. Considering the usability constraints of an irrigation system, such as multiple zones that can&#8217;t run on top of each other, calendaring, different soil types, valves, vegetation types, irrigation systems that run on pumps, a lot of thought had to be put in to the design and user experience (UX) so that the user was able to realize the benefits of having the powerful Rachio cloud at their fingertips.
+
+As the years and months have gone by, Rachio have gradually expanded and extended the feature set of their mobile app based on user feedback. As they&#8217;ve started to understand the IoT space better, Chris and the Rachio team have undergone a shift in their approach to app design. They are realizing that although the way one interacts with hardware might initially influence how the app is designed, ultimately, what yields good design is considering how one wants to interact with the system _as a_ _whole_. Actively trying to understand the important elements of the user interaction, be it informational or configurational, and determining the level of abstraction at which the user can harness the widest feature-set possible, in as enjoyable a manner as possible, is key.
+
+Version 2.0 of the Iro mobile app is on the way, and according to Chris, it will represent a significant change in how users interact with the Iro stack.
+
+**Cloud**
+
+The Rachio cloud contains the bulk of the business logic and is the real brains behind the magic of the Iro.
+
+<div>
+  The Rachio cloud is a multi-layered system, and has a public API layer that allows for client interaction with the cloud. Rachio&#8217;s own clients, like their iOS and Android apps, use this public API. The public API is also accessible to any other device that wants to integrate with Rachio&#8217;s services and the Iro.
+</div>
+
+<div>
+</div>
+
+<div>
+  Given the competitive nature of the space, it isn&#8217;t possible to divulge much about the internals of the Rachio cloud other than to say that it is built in a type-safe language. Rachio also uses <a href="https://nodejs.org/" target="_blank">Node</a> servers that stand in front of the API layer.
+</div>
+
+<div>
+</div>
+
+<div>
+  <strong>Irrigation Scheduling</strong>
+</div>
+
+An important component of the Rachio cloud is the irrigation scheduling algorithm. The main function of the irrigation scheduling algorithm is to determine, based on weather and zone data, how frequently your lawn should be watered. When the Iro was being built, and Chris and the team at Rachio were looking into irrigation algorithms, they found that prior research results on the subject were tried and true and should be the way to water. The Iro supports two types of irrigation algorithms:
+
+1) <a href="https://en.wikipedia.org/wiki/Penman_equation" target="_blank">The Penman equation</a>
+
+2) <a href="http://waterquality.montana.edu/docs/irrigation/depletion.shtml" target="_blank">Maximal allowable depletion</a>
+
+The Rachio cloud also ties into weather services and personal weather stations to obtain data such as daily evapotranspiration rate which are important inputs to the chosen irrigation algorithm. The next version of the Iro app and cloud infrastructure will allow the user to choose which weather station to use.
+
+**Conclusion**
+
+Chris says that although all the individual pieces of the irrigation solution have been available for a long time (for example, Kansas provides a spreadsheet to help home owners manually figure out irrigation scheduling), Rachio, by building a sophisticated cloud architecture and apps that encourage the user to interact with the cloud, has successfully managed to tie all the pieces together to create a water efficient and user-friendly system.
+
+<div>
+  Rachio is at an exciting point in their evolution. They have had the opportunity to see their system in action for the last few years with real people and homes, and now have a much clearer vision of how the space they are in will evolve. They are hard at work at realizing this vision and are confident that they will continue to provide value in the years to come.
+</div>
+
+<div>
+</div>
+
+<div>
+  <em>Author Notes: I&#8217;d like to thank Chris Klein, CEO at Rachio for being so generous with his time. </em>
+</div>
