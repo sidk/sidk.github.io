@@ -10,6 +10,15 @@ cta_content_placement:
 classic-editor-remember:
   - classic-editor
 ---
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
 I&#8217;m Sid Krishnan, founder and developer at Duck Type Labs, a small software consultancy based out of Toronto.
 
 I help small to mid-sized product teams get features out the door quicker and into waiting customers&#8217; hands. Unlike other consultancies, I focus on making your codebase better by reducing technical debt, without disrupting your team&#8217;s workflow.
