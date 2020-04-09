@@ -3,7 +3,7 @@ id: 137
 title: About
 date: 2015-11-27T14:26:59-05:00
 author: Sid
-layout: page
+layout: default
 guid: http://ducktypelabs.com/?page_id=137
 cta_content_placement:
   - below
