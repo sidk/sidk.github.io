@@ -3,7 +3,7 @@ id: 585
 title: 'Review: Stop Using JWT for Sessions'
 date: 2020-04-02T10:18:53-04:00
 author: Sid
-layout: post
+layout: default
 guid: https://ducktypelabs.com/?p=585
 permalink: /review-stop-using-jwt-for-sessions/
 classic-editor-remember:
