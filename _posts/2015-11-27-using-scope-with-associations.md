@@ -107,5 +107,3 @@ As always, let me know in the comments how I can help you &#8211; cheers!
 
 **I&#8217;ve condensed the information in this article into an easy-to-digest PDF cheatsheet &#8211; my goal being to provide you with a quick reference on using scopes with has\_many and belongs\_to in Rails. [Click here to download it!](https://ducktypelabs.com/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf)**
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>

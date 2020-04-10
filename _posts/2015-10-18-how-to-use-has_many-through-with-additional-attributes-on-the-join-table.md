@@ -113,6 +113,3 @@ If you&#8217;re using Rails 4 and `strong_parameters`, you will have to make sur
 And that&#8217;s it! You should now be able to update this admin attribute on the `UserGroup` join table. You can follow the same approach for different types of data as well (like a text field for example). I encourage you to look deeper into what the params hash looks like once it gets to the controller so that you get more comfortable with it. Play with this idea in Rails console as well to increase your confidence.
 
 I&#8217;ve posted an [example app on github](https://github.com/sidk/has_many_through_with_additional_attributes) &#8211; check it out if you need more info about how exactly to get this to work. If you&#8217;re still stuck, or are dealing with a use case which is not similar to this, post in the comments section below and I&#8217;ll try to help.
-
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>

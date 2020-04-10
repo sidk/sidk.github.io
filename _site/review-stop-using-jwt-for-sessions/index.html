@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Review: Stop Using JWT for Sessions</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
-    <nav>
-      <a href="/">List of Articles</a>
-    </nav>
-    <h1>Review: Stop Using JWT for Sessions</h1>
-    <section>
-      <p>If you’ve read any article or tutorial on JWTs, you’ve probably heard a lot about how great they are. They’re stateless, self-contained, highly scalable, easy to work with and more. You’ve probably also wondered why JWTs are always used/recommended/taught without a clear discussion of the tradeoffs, and what their actual downsides are.</p>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav>
+        <a href="/">List of All Articles</a>
+      </nav>
+      <h1>Review: Stop Using JWT for Sessions</h1>
+      <section>
+        <p>If you’ve read any article or tutorial on JWTs, you’ve probably heard a lot about how great they are. They’re stateless, self-contained, highly scalable, easy to work with and more. You’ve probably also wondered why JWTs are always used/recommended/taught without a clear discussion of the tradeoffs, and what their actual downsides are.</p>
 
 <p>In his article, Sven Slootweg (joepie91) writes elegantly about the <a href="http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/">drawbacks of using JWT for sessions</a>. After defining a few terms, he lists all the claimed advantages of JWTs and one by one, offers up arguments against them. He then moves on to listing the downsides of using JWT as a session mechanism and providing supporting detail for each downside. The article wraps up with a section on what JWTs are good for, and ends urging readers to not use JWTs for persistent, long-lived data.</p>
 
@@ -87,12 +88,26 @@
 
 <p>Hope you enjoyed the read – please let me know your thoughts in the comments below. If you liked what you read, make sure to drop your email in the form below to get updated whenever I publish a new article!</p>
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
-
-    </section>
-    <footer>
-      &copy; to me
-    </footer>
+      </section>
+      <section>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc-embed-signup">
+          <form action="https://ducktypelabs.us10.list-manage.com/subscribe/post?u=f8e882c25616e4d0a58a53fc5&amp;id=e880b701c3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+            <h2 class="py-0 my-0 pb-4">Want to be notified when I publish a new article?</h2>
+            <div class="form-container">
+              <input placeholder="enter email" required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+            <div id="mce-responses">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f8e882c25616e4d0a58a53fc5_e880b701c3" tabindex="-1" value=""></div>
+          </form>
+        </div>
+      </section>
+      <footer>© Sid Krishnan</footer>
+    </div>
   </body>
 </html>

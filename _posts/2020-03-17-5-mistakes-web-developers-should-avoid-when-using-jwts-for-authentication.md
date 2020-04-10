@@ -91,9 +91,6 @@ To learn more about how these algorithms work and how they can be exploited, I h
 
 Happy learning and building! As always, let me know what you think in the comments below. If you liked what you read, make sure to drop your email in the form below and I&#8217;ll send you new articles when I write them.
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
-
 ## Recommended Reading
 
   * <http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/>

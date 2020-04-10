@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>How to use has_many :through with additional attributes on the join table</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
-    <nav>
-      <a href="/">List of Articles</a>
-    </nav>
-    <h1>How to use has_many :through with additional attributes on the join table</h1>
-    <section>
-      <p>A common area where developers can get hung up is when using <code class="language-plaintext highlighter-rouge">has_many :through</code>. <code class="language-plaintext highlighter-rouge">has_many :through</code> essentially allows you to link two models together with a “join table”. Though it can be pretty simple to work with, things can get confusing when you find yourself having to pass and store additional attributes in this join table.</p>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav>
+        <a href="/">List of All Articles</a>
+      </nav>
+      <h1>How to use has_many :through with additional attributes on the join table</h1>
+      <section>
+        <p>A common area where developers can get hung up is when using <code class="language-plaintext highlighter-rouge">has_many :through</code>. <code class="language-plaintext highlighter-rouge">has_many :through</code> essentially allows you to link two models together with a “join table”. Though it can be pretty simple to work with, things can get confusing when you find yourself having to pass and store additional attributes in this join table.</p>
 
 <blockquote>
   <p>“I have read every post on the internet pertaining to has_many through with additional attributes on the join table and I am still not getting it”</p>
@@ -114,12 +115,26 @@ end
 
 <p>I’ve posted an <a href="https://github.com/sidk/has_many_through_with_additional_attributes">example app on github</a> – check it out if you need more info about how exactly to get this to work. If you’re still stuck, or are dealing with a use case which is not similar to this, post in the comments section below and I’ll try to help.</p>
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
-
-    </section>
-    <footer>
-      &copy; to me
-    </footer>
+      </section>
+      <section>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc-embed-signup">
+          <form action="https://ducktypelabs.us10.list-manage.com/subscribe/post?u=f8e882c25616e4d0a58a53fc5&amp;id=e880b701c3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+            <h2 class="py-0 my-0 pb-4">Want to be notified when I publish a new article?</h2>
+            <div class="form-container">
+              <input placeholder="enter email" required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+            <div id="mce-responses">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f8e882c25616e4d0a58a53fc5_e880b701c3" tabindex="-1" value=""></div>
+          </form>
+        </div>
+      </section>
+      <footer>© Sid Krishnan</footer>
+    </div>
   </body>
 </html>

@@ -75,9 +75,6 @@ In my Rails apps, the convention I follow is to always name the form object clas
 
 So your form, which resides at `user_registrations/new.html.erb`, posts some data to the `#create` action of the `UserRegistrationsController`, which calls `#save` on `UserRegistration::FormObject` with the params you pass in.
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
-
 ### Form Object parameters
 
 To be able to specify an input in your form, you need to expose the related attribute in your form object. In our example, one of the inputs we want is the user&#8217;s name. So in our form object, we&#8217;d do:
@@ -161,5 +158,3 @@ I encourage you, if you haven&#8217;t already, to consider how form objects migh
 
 Have you used form objects in your Rails apps? Have they helped or hindered you? How else do you keep your controllers thin? Let me know in the comments section, I&#8217;d love to hear what you think.
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>

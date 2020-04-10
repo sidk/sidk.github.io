@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Using scopes with has_many and belongs_to</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
-    <nav>
-      <a href="/">List of Articles</a>
-    </nav>
-    <h1>Using scopes with has_many and belongs_to</h1>
-    <section>
-      <p>Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret <code class="language-plaintext highlighter-rouge">SQL-y</code> errors being returned, (you’ve probably seen error messages which start with <code class="language-plaintext highlighter-rouge">PG::UndefinedTable: ERROR: missing FROM-clause entry for table...</code>, right?) and have no idea how to go about fixing them.</p>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav>
+        <a href="/">List of All Articles</a>
+      </nav>
+      <h1>Using scopes with has_many and belongs_to</h1>
+      <section>
+        <p>Implementing scopes on your associations can cause much confusion and frustration; especially when you see hard to interpret <code class="language-plaintext highlighter-rouge">SQL-y</code> errors being returned, (you’ve probably seen error messages which start with <code class="language-plaintext highlighter-rouge">PG::UndefinedTable: ERROR: missing FROM-clause entry for table...</code>, right?) and have no idea how to go about fixing them.</p>
 
 <p>When you have a <code class="language-plaintext highlighter-rouge">belongs_to</code> or a <code class="language-plaintext highlighter-rouge">has_one/has_many (with or without :through)</code> association defined on your model, you will in many situations benefit from defining scopes in your model that reference your association. Defining a custom scope which references attributes in your association table(s) has the potential to DRY up your code and make code in other parts of your application easier to understand.</p>
 
@@ -109,12 +110,27 @@ end
 
 <p><strong>I’ve condensed the information in this article into an easy-to-digest PDF cheatsheet – my goal being to provide you with a quick reference on using scopes with has_many and belongs_to in Rails. <a href="https://ducktypelabs.com/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf">Click here to download it!</a></strong></p>
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
 
-    </section>
-    <footer>
-      &copy; to me
-    </footer>
+      </section>
+      <section>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc-embed-signup">
+          <form action="https://ducktypelabs.us10.list-manage.com/subscribe/post?u=f8e882c25616e4d0a58a53fc5&amp;id=e880b701c3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+            <h2 class="py-0 my-0 pb-4">Want to be notified when I publish a new article?</h2>
+            <div class="form-container">
+              <input placeholder="enter email" required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+            <div id="mce-responses">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f8e882c25616e4d0a58a53fc5_e880b701c3" tabindex="-1" value=""></div>
+          </form>
+        </div>
+      </section>
+      <footer>© Sid Krishnan</footer>
+    </div>
   </body>
 </html>

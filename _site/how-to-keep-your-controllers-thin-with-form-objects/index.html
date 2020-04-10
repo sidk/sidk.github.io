@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>How To Keep Your Controllers Thin with Form Objects</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
-    <nav>
-      <a href="/">List of Articles</a>
-    </nav>
-    <h1>How To Keep Your Controllers Thin with Form Objects</h1>
-    <section>
-      <p>Typically in Rails, forms which post data to a <code class="language-plaintext highlighter-rouge">#create</code> or <code class="language-plaintext highlighter-rouge">#update</code> action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:</p>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <nav>
+        <a href="/">List of All Articles</a>
+      </nav>
+      <h1>How To Keep Your Controllers Thin with Form Objects</h1>
+      <section>
+        <p>Typically in Rails, forms which post data to a <code class="language-plaintext highlighter-rouge">#create</code> or <code class="language-plaintext highlighter-rouge">#update</code> action are concerned with one particular resource. For example, a form to update a user’s profile. The sequence looks something like this:</p>
 
 <ol>
   <li>The form submits some data to the <code class="language-plaintext highlighter-rouge">#create</code> action in <code class="language-plaintext highlighter-rouge">UsersController</code>.</li>
@@ -90,9 +91,6 @@
 <p>In my Rails apps, the convention I follow is to always name the form object class <code class="language-plaintext highlighter-rouge">FormObject</code>, and namespace them with something context dependent. So in this case, my form object would be <code class="language-plaintext highlighter-rouge">UserRegistration::FormObject</code>.</p>
 
 <p>So your form, which resides at <code class="language-plaintext highlighter-rouge">user_registrations/new.html.erb</code>, posts some data to the <code class="language-plaintext highlighter-rouge">#create</code> action of the <code class="language-plaintext highlighter-rouge">UserRegistrationsController</code>, which calls <code class="language-plaintext highlighter-rouge">#save</code> on <code class="language-plaintext highlighter-rouge">UserRegistration::FormObject</code> with the params you pass in.</p>
-
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
 
 <h3 id="form-object-parameters">Form Object parameters</h3>
 
@@ -182,12 +180,27 @@ end
 
 <p>Have you used form objects in your Rails apps? Have they helped or hindered you? How else do you keep your controllers thin? Let me know in the comments section, I’d love to hear what you think.</p>
 
-<div id="mc_embed_signup" style="background: #dff7fe; padding: 15px;">
-</div>
 
-    </section>
-    <footer>
-      &copy; to me
-    </footer>
+      </section>
+      <section>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc-embed-signup">
+          <form action="https://ducktypelabs.us10.list-manage.com/subscribe/post?u=f8e882c25616e4d0a58a53fc5&amp;id=e880b701c3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div id="mc_embed_signup_scroll">
+            <h2 class="py-0 my-0 pb-4">Want to be notified when I publish a new article?</h2>
+            <div class="form-container">
+              <input placeholder="enter email" required type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+            <div id="mce-responses">
+              <div class="response" id="mce-error-response" style="display:none"></div>
+              <div class="response" id="mce-success-response" style="display:none"></div>
+            </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_f8e882c25616e4d0a58a53fc5_e880b701c3" tabindex="-1" value=""></div>
+          </form>
+        </div>
+      </section>
+      <footer>© Sid Krishnan</footer>
+    </div>
   </body>
 </html>
