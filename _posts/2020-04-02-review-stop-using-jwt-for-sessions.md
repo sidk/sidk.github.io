@@ -77,4 +77,4 @@ The article concludes by saying that about the only thing JWTs are well suited f
 
 To wrap up, I&#8217;d recommend that if you want to use JWTs as an authentication or authorization solution, to acquire as much knowledge as you feasibly can to feel confident in your decision and implementation. If you haven&#8217;t already, check out my previous article on [mistakes that can be made when using JWTs](https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/).
 
-Hope you enjoyed the read &#8211; please let me know your thoughts in the comments below. If you liked what you read, make sure to drop your email in the form below to get updated whenever I publish a new article!
+If you liked what you read, make sure to drop your email in the form below to get notified whenever I publish a new article.
