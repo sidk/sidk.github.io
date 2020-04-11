@@ -48,7 +48,7 @@ will return the earliest `created_at` (which is a timestamp) in the users table.
 
 In `ActiveRecord` the [`select` method](http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-select) can be used to achieve the same result. Also, calls to methods such as `.all`, `.where`, `.find` etc translate to `SELECT` functions.
 
-**I&#8217;ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you&#8217;d prefer downloading and printing it out, [click here to get it!](http://ducktypelabs.com/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf)**
+**I&#8217;ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you&#8217;d prefer downloading and printing it out, [click here to get it!](/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf)**
 
 For the sake of this article, assume our models look like this:
 
@@ -207,6 +207,6 @@ If you don&#8217;t want to go the views route, you might consider organizing you
 
 ## Conclusion
 
-With the information covered in this article, we can now begin to craft an answer for our hypothetical product manager, making the database server bear the brunt of the work. I&#8217;d now like to hear from you. Have you worked with time in ActiveRecord and your DB? If yes, how was the experience and what did you learn from it? Leave a comment below!
+With the information covered in this article, we can now begin to craft an answer for our hypothetical product manager, making the database server bear the brunt of the work.
 
-**I&#8217;ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you&#8217;d prefer downloading and printing it out, [click here to get it!](http://ducktypelabs.com/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf)**
+**I&#8217;ve prepared a handy 3-page PDF cheatsheet containing the salient points of this article. If you&#8217;d prefer downloading and printing it out, [click here to get it!](/wp-content/uploads/2016/07/3_ways_to_work_time_in_postgres.pdf)**

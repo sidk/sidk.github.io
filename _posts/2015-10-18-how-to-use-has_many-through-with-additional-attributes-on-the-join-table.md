@@ -19,7 +19,7 @@ A common area where developers can get hung up is when using `has_many :through`
 > 
 > “how do you store extra info in the join model and extract that out later?&#8221;
 
-If you followed along [my previous post](http://ducktypelabs.com/how-a-has_many-through-association-works-in-practice/), at this point you should have a good idea of how to write your models, controllers and views such that you can create, display and edit records which use a `has_many :through` association. If you&#8217;re still stuck on that, leave a comment below and I&#8217;ll try to sort you out. Make sure to check out [Ryan Bates screencast](http://railscasts.com/episodes/17-habtm-checkboxes-revised) on the basics, and also checkout [Rahoul&#8217;s article](http://theartandscienceofruby.com/2015/06/23/which-activerecord-association-should-i-use-has-and-belongs-to-many-or-has-many-through/) on when you should `has_many` in the first place.
+If you followed along [my previous post](http://ducktypelabs.com/how-a-has_many-through-association-works-in-practice/), at this point you should have a good idea of how to write your models, controllers and views such that you can create, display and edit records which use a `has_many :through` association. Make sure to check out [Ryan Bates screencast](http://railscasts.com/episodes/17-habtm-checkboxes-revised) on the basics, and also checkout [Rahoul&#8217;s article](http://theartandscienceofruby.com/2015/06/23/which-activerecord-association-should-i-use-has-and-belongs-to-many-or-has-many-through/) on when you should `has_many` in the first place.
 
 So, what do you do when you want to store/access additional attributes in the join table?
 
@@ -112,4 +112,4 @@ If you&#8217;re using Rails 4 and `strong_parameters`, you will have to make sur
 
 And that&#8217;s it! You should now be able to update this admin attribute on the `UserGroup` join table. You can follow the same approach for different types of data as well (like a text field for example). I encourage you to look deeper into what the params hash looks like once it gets to the controller so that you get more comfortable with it. Play with this idea in Rails console as well to increase your confidence.
 
-I&#8217;ve posted an [example app on github](https://github.com/sidk/has_many_through_with_additional_attributes) &#8211; check it out if you need more info about how exactly to get this to work. If you&#8217;re still stuck, or are dealing with a use case which is not similar to this, post in the comments section below and I&#8217;ll try to help.
+I&#8217;ve posted an [example app on github](https://github.com/sidk/has_many_through_with_additional_attributes) &#8211; check it out if you need more info about how exactly to get this to work.

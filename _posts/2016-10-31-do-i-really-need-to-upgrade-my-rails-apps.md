@@ -55,7 +55,7 @@ DOM-based XSS vulnerabilities arise when client-side Javascript extracts data co
 
 For the purposes of this article, we will focus on Stored XSS.
 
-**[Click here to download a handy cheatsheet on Rails XSS & Security!](https://ducktypelabs.com/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf)**
+**[Click here to download a handy cheatsheet on Rails XSS & Security!](/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf)**
 
 ## How to attack a Stored XSS Vulnerability?
 
@@ -207,8 +207,6 @@ When `bundler-audit` flags a gem as being out of date, upgrade the gem either wi
 
 **If you have the time, look into the security advisory that you just patched and use that as an excuse to learn more about that particular class of vulnerabilities.**
 
-Have you patched your Rails app recently? If so, how did that process go for you? What would you like to learn about security in Rails? Let me know in the comments below!
-
 **Shout-out: Thanks to [Chris Drane](https://github.com/obromios) for suggesting this article, and to Gabriel Williams at [Cloud City](https://www.cloudcity.io/) for reviewing it!**
 
-**[Click here to download a handy cheatsheet on Rails XSS & Security!](https://ducktypelabs.com/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf)**
+**[Click here to download a handy cheatsheet on Rails XSS & Security!](/wp-content/uploads/2016/10/Rails_XSS_Security_Cheatsheet.pdf)**

@@ -123,4 +123,4 @@ This book covers many things I didn&#8217;t cover here. Definitely worth a read.
   1. Partial Indexes
   2. Redundant Indexes
 
-As always, hit me up in the comments section if you&#8217;re stuck on anything in particular or if there&#8217;s a topic you want me to write more about. Cheers, and until next time!
+Cheers, and until next time!

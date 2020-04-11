@@ -46,7 +46,7 @@ So the above would look like:
     end
     
 
-**I&#8217;ve condensed the information in this article into an easy-to-digest PDF cheatsheet &#8211; my goal being to provide you with a quick reference on using scopes with has\_many and belongs\_to in Rails. [Click here to download it!](https://ducktypelabs.com/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf)**
+**I&#8217;ve condensed the information in this article into an easy-to-digest PDF cheatsheet &#8211; my goal being to provide you with a quick reference on using scopes with has\_many and belongs\_to in Rails. [Click here to download it!](/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf)**
 
 ### Referencing attributes of the association table in your scope
 
@@ -63,9 +63,9 @@ Couple of things to note from the scope definition above:
   1. You **have to use the `joins` method in your scope** so that your DB knows which table you&#8217;re referring to.
   2. To reference association attributes in the `where` method, you **have to use the table name of the association followed by the column name** (`posts.pending` in this case) to prevent your DB from complaining, and to have it return the expected result.
 
-A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You&#8217;d of course have to set up your `joins` correctly &#8211; refer to [the ActiveRecord documentation](http://apidock.com/rails/ActiveRecord/QueryMethods/joins) for more info, and if you&#8217;re still stuck, ping me in the comments below!
+A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You&#8217;d of course have to set up your `joins` correctly &#8211; refer to [the ActiveRecord documentation](http://apidock.com/rails/ActiveRecord/QueryMethods/joins) for more info.
 
-**Update**: Kevin pointed out in the comments section that instead of doing:
+**Update**: Kevin pointed out in the comments section(of my old website) that instead of doing:
 
     scope :with_pending_posts, -> { joins(:posts).where('posts.pending = true') }
     
@@ -103,7 +103,5 @@ Check out this [Reddit thread](https://www.reddit.com/r/ruby/comments/3s7l1y/ref
 
 Also, if you haven&#8217;t seen this before, [this Railscast is an amazing resource](http://railscasts.com/episodes/215-advanced-queries-in-rails-3?view=asciicast) for getting deeper into association scopes.
 
-As always, let me know in the comments how I can help you &#8211; cheers!
-
-**I&#8217;ve condensed the information in this article into an easy-to-digest PDF cheatsheet &#8211; my goal being to provide you with a quick reference on using scopes with has\_many and belongs\_to in Rails. [Click here to download it!](https://ducktypelabs.com/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf)**
+**I&#8217;ve condensed the information in this article into an easy-to-digest PDF cheatsheet &#8211; my goal being to provide you with a quick reference on using scopes with has\_many and belongs\_to in Rails. [Click here to download it!](/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf)**
 

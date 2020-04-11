@@ -155,6 +155,3 @@ The important thing with the `#save` method is to return false and true correctl
 I&#8217;m a big fan of form objects, and a general rule of thumb for me is to use them whenever I feel things are getting complicated in the controller and view. They can even be used in situations where you&#8217;re not dealing directly with the database (like for example interacting with a third party API).
 
 I encourage you, if you haven&#8217;t already, to consider how form objects might fit into your app. They will go a long way in ensuring your controllers _and_ models are thin and keeping your code maintainable.
-
-Have you used form objects in your Rails apps? Have they helped or hindered you? How else do you keep your controllers thin? Let me know in the comments section, I&#8217;d love to hear what you think.
-

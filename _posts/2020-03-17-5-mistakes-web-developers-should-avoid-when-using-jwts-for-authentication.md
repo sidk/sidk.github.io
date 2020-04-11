@@ -89,11 +89,7 @@ To learn more about how these algorithms work and how they can be exploited, I h
 
 * * *
 
-Happy learning and building! As always, let me know what you think in the comments below. If you liked what you read, make sure to drop your email in the form below and I&#8217;ll send you new articles when I write them.
-
 ## Recommended Reading
 
   * <http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/>
   * [http://cryto.net/~joepie91/blog/2016/06/19/stop-using-jwt-for-sessions-part-2-why-your-solution-doesnt-work/](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/)
-
-I highly recommend giving these a read to further understand what could go wrong when using JWTs, so you&#8217;re best prepared to understand the trade-offs and design/build a secure system.

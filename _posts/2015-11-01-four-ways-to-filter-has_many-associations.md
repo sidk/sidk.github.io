@@ -73,6 +73,4 @@ Depending on what you want your query to return, here are 4 different ways to ap
  end
  Note that the `merge` method used here is the one for `Hash`, and not the `ActiveRecord` method. You should be able to extend this to return multiple users as well.
  ```
- Another way to do this is by defining a scoped `has_many` association. If you&#8217;re interested in seeing how this might be done, ping me in the comment section below and I&#8217;ll do a post on this topic specifically.
-
-Hope this was helpful. As always, if you have a question about this topic that isn&#8217;t specifically addressed above, leave a comment below, and I&#8217;ll do my best to help out!
+ Another way to do this is by defining a scoped `has_many` association.

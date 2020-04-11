@@ -100,5 +100,3 @@ Learning about security vulnerabilities and then applying that knowledge to atta
 # Conclusion
 
 The above list is not meant to to be comprehensive, and what I&#8217;ve left out can probably fill multiple books. However, I hope I&#8217;ve given you a few things to think about and that you&#8217;re able to take away at least one thing that will make your app more secure.
-
-I&#8217;d love to hear from you! Post in the comments section below &#8211; what do you do to secure your auth?

@@ -53,5 +53,3 @@ For more association type goodness on POROs, also check out the [activemodel-ass
 So if you decide to go with a PORO, you next question is probably: **Where should this file reside?**
 
 There are a couple of common options &#8211; in the models directory with the rest of the models in /app/models, or in the /lib directory. Pat Maddox recommends the models directory, and I concur, because if you&#8217;re going to treat it like a model in other parts of your code, it&#8217;s natural that other developers (or you in the future) will look for the class in the models directory. That being said, this is just a convention, and either way works.
-
-As always, let me know in the comments below if you have a question that is not covered by this article (maybe polymorphic associations?), and I&#8217;ll get back to you ASAP.
