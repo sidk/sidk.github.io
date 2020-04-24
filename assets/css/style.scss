@@ -6044,6 +6044,7 @@ pre {
   line-height: 1.5;
   word-wrap: break-word;
 }
+
 .markdown-body::before {
   display: table;
   content: "";
@@ -6721,4 +6722,18 @@ pre {
 }
 input.email {
   width: 70%;
+}
+
+@media all and (max-width: 768px) {
+  .markdown-body {
+    font-size: 23px;
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    h2 {
+      font-size: 1em;
+    }
+  }
 }
