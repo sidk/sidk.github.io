@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Using scopes with has_many and belongs_to</title>
     <link rel="stylesheet" href="/assets/css/style.css">
   </head>
@@ -64,9 +65,9 @@ end
   <li>To reference association attributes in the <code class="language-plaintext highlighter-rouge">where</code> method, you <strong>have to use the table name of the association followed by the column name</strong> (<code class="language-plaintext highlighter-rouge">posts.pending</code> in this case) to prevent your DB from complaining, and to have it return the expected result.</li>
 </ol>
 
-<p>A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You’d of course have to set up your <code class="language-plaintext highlighter-rouge">joins</code> correctly – refer to <a href="http://apidock.com/rails/ActiveRecord/QueryMethods/joins">the ActiveRecord documentation</a> for more info, and if you’re still stuck, ping me in the comments below!</p>
+<p>A corollary from the points above is that you can technically reference attributes of any table in your scope, even if they are not explicitly defined as an association in your model. You’d of course have to set up your <code class="language-plaintext highlighter-rouge">joins</code> correctly – refer to <a href="http://apidock.com/rails/ActiveRecord/QueryMethods/joins">the ActiveRecord documentation</a> for more info.</p>
 
-<p><strong>Update</strong>: Kevin pointed out in the comments section that instead of doing:</p>
+<p><strong>Update</strong>: Kevin pointed out in the comments section(of my old website) that instead of doing:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :with_pending_posts, -&gt; { joins(:posts).where('posts.pending = true') }
 </code></pre></div></div>
@@ -105,8 +106,6 @@ end
 <p>Check out this <a href="https://www.reddit.com/r/ruby/comments/3s7l1y/referencing_self_and_through_association_in_scopes/">Reddit thread</a> for more details on the above example.</p>
 
 <p>Also, if you haven’t seen this before, <a href="http://railscasts.com/episodes/215-advanced-queries-in-rails-3?view=asciicast">this Railscast is an amazing resource</a> for getting deeper into association scopes.</p>
-
-<p>As always, let me know in the comments how I can help you – cheers!</p>
 
 <p><strong>I’ve condensed the information in this article into an easy-to-digest PDF cheatsheet – my goal being to provide you with a quick reference on using scopes with has_many and belongs_to in Rails. <a href="/wp-content/uploads/2017/06/ScopesWithHasManyAndBelongsTo.pdf">Click here to download it!</a></strong></p>
 

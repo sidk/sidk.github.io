@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How to use has_many :through with additional attributes on the join table</title>
     <link rel="stylesheet" href="/assets/css/style.css">
   </head>
@@ -20,7 +21,7 @@
   <p>“how do you store extra info in the join model and extract that out later?”</p>
 </blockquote>
 
-<p>If you followed along <a href="http://ducktypelabs.com/how-a-has_many-through-association-works-in-practice/">my previous post</a>, at this point you should have a good idea of how to write your models, controllers and views such that you can create, display and edit records which use a <code class="language-plaintext highlighter-rouge">has_many :through</code> association. If you’re still stuck on that, leave a comment below and I’ll try to sort you out. Make sure to check out <a href="http://railscasts.com/episodes/17-habtm-checkboxes-revised">Ryan Bates screencast</a> on the basics, and also checkout <a href="http://theartandscienceofruby.com/2015/06/23/which-activerecord-association-should-i-use-has-and-belongs-to-many-or-has-many-through/">Rahoul’s article</a> on when you should <code class="language-plaintext highlighter-rouge">has_many</code> in the first place.</p>
+<p>If you followed along <a href="http://ducktypelabs.com/how-a-has_many-through-association-works-in-practice/">my previous post</a>, at this point you should have a good idea of how to write your models, controllers and views such that you can create, display and edit records which use a <code class="language-plaintext highlighter-rouge">has_many :through</code> association. Make sure to check out <a href="http://railscasts.com/episodes/17-habtm-checkboxes-revised">Ryan Bates screencast</a> on the basics, and also checkout <a href="http://theartandscienceofruby.com/2015/06/23/which-activerecord-association-should-i-use-has-and-belongs-to-many-or-has-many-through/">Rahoul’s article</a> on when you should <code class="language-plaintext highlighter-rouge">has_many</code> in the first place.</p>
 
 <p>So, what do you do when you want to store/access additional attributes in the join table?</p>
 
@@ -113,7 +114,7 @@ end
 
 <p>And that’s it! You should now be able to update this admin attribute on the <code class="language-plaintext highlighter-rouge">UserGroup</code> join table. You can follow the same approach for different types of data as well (like a text field for example). I encourage you to look deeper into what the params hash looks like once it gets to the controller so that you get more comfortable with it. Play with this idea in Rails console as well to increase your confidence.</p>
 
-<p>I’ve posted an <a href="https://github.com/sidk/has_many_through_with_additional_attributes">example app on github</a> – check it out if you need more info about how exactly to get this to work. If you’re still stuck, or are dealing with a use case which is not similar to this, post in the comments section below and I’ll try to help.</p>
+<p>I’ve posted an <a href="https://github.com/sidk/has_many_through_with_additional_attributes">example app on github</a> – check it out if you need more info about how exactly to get this to work.</p>
 
       </section>
       <section>

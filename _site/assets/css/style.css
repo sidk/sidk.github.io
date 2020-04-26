@@ -2971,3 +2971,7 @@ pre { margin-top: 0; margin-bottom: 0; font-family: "SFMono-Regular", Consolas, 
 .form-container { display: flex; justify-content: center; }
 
 input.email { width: 70%; }
+
+@media all and (max-width: 768px) { .markdown-body { font-size: 23px; }
+  .markdown-body h1 { font-size: 1.5em; }
+  .markdown-body h2 { font-size: 1em; } }

@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4 ways to filter has_many associations</title>
     <link rel="stylesheet" href="/assets/css/style.css">
   </head>
@@ -72,9 +73,7 @@ User.includes(:projects).merge(Project.opened_recently).references(:projects)
  <span class="k">end</span>
  <span class="no">Note</span> <span class="n">that</span> <span class="n">the</span> <span class="sb">`merge`</span> <span class="nb">method</span> <span class="n">used</span> <span class="n">here</span> <span class="n">is</span> <span class="n">the</span> <span class="n">one</span> <span class="k">for</span> <span class="sb">`Hash`</span><span class="p">,</span> <span class="n">and</span> <span class="n">not</span> <span class="n">the</span> <span class="sb">`ActiveRecord`</span> <span class="nb">method</span><span class="o">.</span> <span class="no">You</span> <span class="n">should</span> <span class="n">be</span> <span class="n">able</span> <span class="n">to</span> <span class="kp">extend</span> <span class="n">this</span> <span class="n">to</span> <span class="k">return</span> <span class="n">multiple</span> <span class="n">users</span> <span class="n">as</span> <span class="n">well</span><span class="o">.</span>
 </code></pre></div></div>
-<p>Another way to do this is by defining a scoped <code class="language-plaintext highlighter-rouge">has_many</code> association. If you’re interested in seeing how this might be done, ping me in the comment section below and I’ll do a post on this topic specifically.</p>
-
-<p>Hope this was helpful. As always, if you have a question about this topic that isn’t specifically addressed above, leave a comment below, and I’ll do my best to help out!</p>
+<p>Another way to do this is by defining a scoped <code class="language-plaintext highlighter-rouge">has_many</code> association.</p>
 
       </section>
       <section>
