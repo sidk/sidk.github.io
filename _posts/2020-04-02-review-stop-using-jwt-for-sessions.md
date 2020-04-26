@@ -10,7 +10,7 @@ categories:
   - Security
 ---
 <div class="d-flex flex-justify-center">
-  <img src="/assets/images/lock-and-key.jpeg" alt="jwt lock and key image" style="width: 50%;"/>
+  <img src="/assets/images/lock-and-key.jpeg" alt="jwt lock and key image" style="width: 50%; height: 50%"/>
 </div>
 
 If you've read any article or tutorial on JWTs, you've probably heard a lot about how great they are. They're stateless, self-contained, highly scalable, easy to work with and more. You've probably also wondered why JWTs are always used/recommended/taught without a clear discussion of the tradeoffs, and what their actual downsides are.

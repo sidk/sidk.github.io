@@ -3,8 +3,13 @@
 
 /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
 /** 1. Change the default font family in all browsers (opinionated). 2. Prevent adjustments of font size after orientation changes in IE and iOS. */
+@font-face {
+  font-family: "Goudy";
+  src: url("/assets/goudy_bookletter_1911-webfont.woff") format("woff");
+}
+
 html {
-  font-family: sans-serif; /* 1 */
+  font-family: "Goudy"; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -291,8 +296,7 @@ button {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "Goudy";
   font-size: 14px;
   line-height: 1.5;
   color: #24292e;
@@ -6038,10 +6042,10 @@ pre {
   }
 }
 .markdown-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 16px;
-  line-height: 1.5;
+  font-family: "Goudy", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 20px;
+  line-height: 1.7;
   word-wrap: break-word;
 }
 
