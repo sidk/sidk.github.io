@@ -6741,3 +6741,14 @@ input.email {
     }
   }
 }
+
+.form-container {
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  margin-top: 10px;
+  width: 150px;
+  border-radius: 5px;
+}
