@@ -1,6 +1,6 @@
 ---
 id: 585
-title: 'Review: Stop Using JWT for Sessions'
+title: "Review: Stop Using JWT for Sessions"
 date: 2020-04-02T10:18:53-04:00
 author: Sid
 layout: default
@@ -9,18 +9,16 @@ permalink: /review-stop-using-jwt-for-sessions/
 categories:
   - Security
 ---
-<div class="d-flex flex-justify-center">
-  <img src="/assets/images/lock-and-key.jpeg" alt="jwt lock and key image" style="width: 50%; height: 50%"/>
-</div>
 
 If you've read any article or tutorial on JWTs, you've probably heard a lot about how great they are. They're stateless, self-contained, highly scalable, easy to work with and more. You've probably also wondered why JWTs are always used/recommended/taught without a clear discussion of the tradeoffs, and what their actual downsides are.
 
 In his article, Sven Slootweg (joepie91) writes elegantly about the [drawbacks of using JWT for sessions](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/). After defining a few terms, he lists all the claimed advantages of JWTs and one by one, offers up arguments against them. He then moves on to listing the downsides of using JWT as a session mechanism and providing supporting detail for each downside. The article wraps up with a section on what JWTs are good for, and ends urging readers to not use JWTs for persistent, long-lived data.
 
+<img src="/assets/images/lock-and-key.png" alt="jwt lock and key image" style="width: 40%; height: 40%;" align="left"/>
+
 I'll start off this review with a recommendation: [Read Sven's article!](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) If you're dubious about the benefits of JWTs, you will be able to articulate to your peers what their disadvantages are after reading it and be more confident in any decision you or y'all make. Also, regardless of what your current thoughts about JWTs are, you will likely learn a thing or two not only about JWTs, but about how to think about web application security. The article presents several security scenarios that any web developer must grapple with and account for, JWT usage notwithstanding, which makes for some very useful learning.
 
 While Sven covers a lot, there are a few things that could do with some more elaboration and coverage.
-
 
 ## Comparison Semantics
 
@@ -30,8 +28,8 @@ In the section titled &#8220;A note upfront&#8221;, the article makes the distin
 
 The article mentions two important drawbacks of stateless JWTs, namely:
 
-  1. They can't be invalidated without involving some kind of stateful architecture.
-  2. Data in them can go stale.
+1. They can't be invalidated without involving some kind of stateful architecture.
+2. Data in them can go stale.
 
 While this is true, it is worth noting that _these drawbacks apply to any stateless session mechanism, and are not confined to stateless sessions which use JWTs._ Sessions which are only stored client-side, regardless of if they use JWT, can't be invalidated without some state being persistently maintained.
 
@@ -45,9 +43,9 @@ Though this seems like a pretty reasonable approach, it has many of the same iss
 
 To fix this flow and still use JWTs, we can do the following:
 
-  1. Continue to use &#8220;old-school&#8221; sessions and cookies on both domains.
-  2. When issuing a redirect to another domain, add a JWT to the URL as a query parameter, to be used as a _one time token_, with a very short life.
-  3. Give both domains the ability to validate JWTs in query strings and automatically log a user in and issue a session cookie if a valid JWT is present.
+1. Continue to use &#8220;old-school&#8221; sessions and cookies on both domains.
+2. When issuing a redirect to another domain, add a JWT to the URL as a query parameter, to be used as a _one time token_, with a very short life.
+3. Give both domains the ability to validate JWTs in query strings and automatically log a user in and issue a session cookie if a valid JWT is present.
 
 This way, we avoid storing sensitive information in local storage and maintain whatever ability we had to revoke user sessions.
 
@@ -62,8 +60,9 @@ This is a reasonable point, but it misses a security consideration. For the atta
 Now, you could contend that the seriousness of an XSS vulnerability far surpasses any security gains you might make by storing tokens in httpOnly cookies. Like most security problems though, if you don't have a really good reason to lower your security posture, by however little, I'd argue against it and keep my tokens in cookies.
 
 You will of course have to protect your cookies against CSRF attacks. This, by itself, is seen by some as an argument against putting tokens in cookies. To counter that argument I'd offer the following:
-  1. XSS attacks are really hard to prevent. Though you should do your best to secure yourself against them, you should in your threat model account for a high likelihood that they will happen anyway.
-  2. CSRF attacks, although prevalent, are easier to guard against because there are only a few ways a CSRF vulnerability can be exploited.
+
+1. XSS attacks are really hard to prevent. Though you should do your best to secure yourself against them, you should in your threat model account for a high likelihood that they will happen anyway.
+2. CSRF attacks, although prevalent, are easier to guard against because there are only a few ways a CSRF vulnerability can be exploited.
 
 So, XSS -> high likelihood and CSRF -> low likelihood. I'd rather add anti-CSRF measures (which most frameworks give me for free anyway) than risk my users' tokens (which are equivalent to a username/password combo) being exfiltrated and used indefinitely.
 
@@ -73,14 +72,14 @@ _Note: Sven quotes an article (the &#8220;Storing Sessions&#8221; section) when 
 
 The article concludes by saying that about the only thing JWTs are well suited for are single-use authorization tokens. As an admittedly weak counterpoint to that (because I'm no cryptologist), I'd like to mention that in my reading so far, I have come across multiple cryptographic issues with the the JOSE family of standards (of which the JWT spec is a part). Refer [here](https://news.ycombinator.com/item?id=14292223) for an example. If you're not familiar with `tptacek`, he's a professional security expert, and part of the team which developed the exercises at https://cryptopals.com/. My understanding of the cryptograhic drawbacks of JOSE thus far boil down to the following:
 
-  1. It allows for signature generation/validation algorithm choice. This effectively means that as developers, we either have to depend on the JWT library that we're using to implement things securely (there have been several vulnerabilities in libraries reported over the course of the JWT spec's lifespan), or know enough to secure things in the app layer. As a spec, JWT/JOSE could have avoided this by constraining the choices that implementers have and simplifying what the spec is capable of.
-  2. It allows for a diverse assortment of encryption algorithms to be used, many of which are notoriously hard to get right.
+1. It allows for signature generation/validation algorithm choice. This effectively means that as developers, we either have to depend on the JWT library that we're using to implement things securely (there have been several vulnerabilities in libraries reported over the course of the JWT spec's lifespan), or know enough to secure things in the app layer. As a spec, JWT/JOSE could have avoided this by constraining the choices that implementers have and simplifying what the spec is capable of.
+2. It allows for a diverse assortment of encryption algorithms to be used, many of which are notoriously hard to get right.
 
 The alternative commonly suggested to a JWT is to use a secure random string instead, or to HMAC, both of which require significantly less code than a spec-compliant JWT library.
 
 Take this section with a grain of salt because I'm not a cryptography expert, but do do your own research into this using the above links as a starting point.
 
-* * *
+---
 
 If you haven't already, check out my article on [mistakes that can be made when using JWTs](https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/).
 
