@@ -1,6 +1,6 @@
 ---
 id: 564
-title: 5 Mistakes Web Developers Should Avoid When using JWTs for Authentication
+title: Are you making these JWT Authentication mistakes?
 date: 2020-03-17T13:46:56-04:00
 author: Sid
 layout: post
@@ -8,25 +8,14 @@ guid: https://ducktypelabs.com/?p=564
 permalink: /5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/
 classic-editor-remember:
   - classic-editor
-cta_content_placement:
-  - below
-sharing_disabled:
-  - "1"
 categories:
   - Security
 ---
-This list is for you if:
-
-  * You care about keeping your users safe and wonder what the best practices for web app authentication are.
-  * You&#8217;re using or going to use JWTs (JSON Web Tokens) to perform authentication in your application.
-
-When it comes to security, a &#8220;working&#8221; system unfortunately does not guarantee your users&#8217; safety. This can be true regardless of the &#8220;thing&#8221; you&#8217;re using to build your authentication system, JWTs or otherwise.
-
 JWTs have received and continue to receive a lot of positive and negative attention over the last few years. The pro-JWT camp touts benefits like statelessness, portability, a convenient interface and so on. The anti-JWT camp says JWT is a kitchen sink of crypto formats and maximizes the number of things that can go wrong.
 
 `¯\_(ツ)_/¯`
 
-In this post, I&#8217;ll take a pragmatic approach and attempt to draw up a list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you&#8217;re building authentication. Note that some of the items in this list apply regardless of if you&#8217;re using JWTs or not, and some are specific to JWTs.
+In this post, I&#8217;ll take a pragmatic approach and attempt to draw up a list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you&#8217;re building authentication. Note that some of the items in this list apply regardless of if you&#8217;re using JWTs, and some are specific to JWTs.
 
 Note: To keep this article short, the scenarios I&#8217;m going to focus on all involve a front-end (run on a browser), user-facing application communicating with one or more servers to perform authentication.
 
@@ -49,7 +38,6 @@ A typical JWT looks like this:
 
     eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     
-
 Though this looks illegible, it is actually very readable because it&#8217;s a plain text JSON object [encoded](https://en.wikipedia.org/wiki/Binary-to-text_encoding) using base64. For every piece of information you decide to put in your JWT, ask yourself: How much damage would it cause if this gets into the wrong hands?
 
 Two common remediations for having sensitive data in the JWT are:
