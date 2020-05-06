@@ -34,9 +34,7 @@ However, when you're thinking about the security of your system, I believe _you 
 
 ## But does having an XSS vulnerability mean it's "game over"?
 
-<div class="d-flex flex-justify-center">
-  <img src="/assets/images/chess.png" alt="chess piece queen" style="width: 30%; height: 30%"/>
-</div>
+<img src="/assets/images/chess.png" alt="chess piece queen" style="width: 20%; height: 20%" align="left"/>
 
 If we were playing a game of chess, and I captured your queen, would you abandon hope and throw in the towel? I don't think so; you'd probably just regroup and continue to try your best to win the game. If you were an experienced chess player, you might even have a set of go-to tactics to bring into play when you lose your queen.
 
