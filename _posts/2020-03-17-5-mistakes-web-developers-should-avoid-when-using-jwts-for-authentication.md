@@ -4,20 +4,22 @@ title: Are you making these JWT Authentication mistakes?
 date: 2020-03-17T13:46:56-04:00
 author: Sid
 layout: post
-guid: https://ducktypelabs.com/?p=564
 permalink: /5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/
-classic-editor-remember:
-  - classic-editor
 categories:
   - Security
 ---
+
 JWTs have received and continue to receive a lot of positive and negative attention over the last few years. The pro-JWT camp touts benefits like statelessness, portability, a convenient interface and so on. The anti-JWT camp says JWT is a kitchen sink of crypto formats and maximizes the number of things that can go wrong.
+
+It's hard to figure out what "best practices" are in such an environment. When you're tasked with building a web app authentication system and have to make decisions on what techs you'll use and how you'll put them together with tech you're stuck with or want to explore, coming across conflicting advice can be unsettling. 
+
+Especially since any slip-ups could end up hurting the very users you're trying to protect. Are you doomed if you don't follow every piece of advice out there?
 
 `¯\_(ツ)_/¯`
 
-In this post, I&#8217;ll take a pragmatic approach and attempt to draw up a list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you&#8217;re building authentication. Note that some of the items in this list apply regardless of if you&#8217;re using JWTs, and some are specific to JWTs.
+In this post, I&#8217;ll take a pragmatic approach and draw up a short list of mistakes that can be made when using JWTs for authentication, while trying my best not to make any value judgements. Think of this as a checklist to go through as you&#8217;re building authentication. Staying clear of these mistakes, or having well thought-out reasons for not doing so, will go a long way in helping you build a more secure authentication system.
 
-Note: To keep this article short, the scenarios I&#8217;m going to focus on all involve a front-end (run on a browser), user-facing application communicating with one or more servers to perform authentication.
+To keep things short, the scenarios I&#8217;m going to focus on all involve a front-end (run on a browser), user-facing application communicating with one or more servers to perform authentication.
 
 ## Not having a strategy for session invalidation or revocation
 
@@ -49,9 +51,11 @@ Needless to say, there are trade-offs with both approaches, which neccessitates 
 
 ## Not guarding against CSRF (cross-site request forgery)
 
-In this scenario, your front-end app stores the JWT in a cookie (with no protections on it) and your server authenticates requests by parsing the cookie and performing a JWT validation check on it. If a user has your app open in a browser tab and happens upon a malicious web site in another tab, this web site can make authenticated requests to your web app because the browser will automatically include any cookies associated with your web app&#8217;s domain. This is known as cross-site request forgery, and you&#8217;ll want to [guard against it](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Prevention). A common solution is for your server to include a CSRF token in its responses and require that any requests made to it also contain a matching token, the main idea being that a malicious script would have no way of knowing what this token is and therefore have its requests blocked.
+In this scenario, your front-end app stores the JWT in a cookie (with no protections on it) and your server authenticates requests by verifying it. If a user has your app open in a browser tab and happens upon a malicious web site in another tab, this web site can make authenticated requests to your web app because the browser will automatically include any cookies associated with your web app&#8217;s domain. This is known as cross-site request forgery, and you&#8217;ll want to [guard against it](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Prevention). A common solution is for your server to include an anti-CSRF token in its responses and require that any requests made to it also contain a matching token, the main idea being that a malicious script would have no way of knowing what this token is and therefore have its requests blocked.
 
 If you&#8217;re using a framework like Rails or Express, the chances are high that the framework will include options that you can use to protect your users against CSRF, using one or more of the ways detailed in the Wikipedia link above.
+
+A measure you can take in parallel to implementing an anti-CSRF token system is to use the `SameSite` flag on your cookies. Setting `SameSite=Strict` will tell the browser that it should only send cookies for requests originating from the site that set the cookie.
 
 _Related:_ You&#8217;ll also want to set the `httpOnly` and `secure` flags on your cookies. `httpOnly` prevents malicious scripts from accessing and potentially exfiltrating the contents of your JWT (in the context of an [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) attack) and `secure` ensures that cookies will not be sent across the wire unless the [https](https://en.wikipedia.org/wiki/HTTPS) protocol is being used.
 
@@ -75,9 +79,20 @@ Also don&#8217;t allow &#8220;None&#8221; as one of the algorithm choices 🙂
 
 To learn more about how these algorithms work and how they can be exploited, I highly recommend [the cryptopals challenges](https://cryptopals.com/sets/6)!
 
+
+## What's next?
+
+Now that you know of a few things that can go wrong when using JWTs to build authentication, here's what you can do to solidify your knowledge.
+
+Pick a codebase to "audit" (something you're hopefully pretty familiar with). Identify places where you may have made one or more of the mistakes above. Ask yourself:
+
+* If there was a good justification for it
+* If there wasn't, how you would fix it
+
+
+If you're using JWTs for session management, you'll likely find [my article reviewing the drawbacks of this approach useful]({% post_url 2020-04-02-review-stop-using-jwt-for-sessions %}).
+
+
 * * *
 
-## Recommended Reading
-
-  * <http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/>
-  * [http://cryto.net/~joepie91/blog/2016/06/19/stop-using-jwt-for-sessions-part-2-why-your-solution-doesnt-work/](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/)
+Finally, if you found this article useful, drop your email in the box below to stay updated when I publish new articles. I'm currently learning all I can about authentication systems and am aiming to publish a new article once every two weeks.
