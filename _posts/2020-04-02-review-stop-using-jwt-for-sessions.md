@@ -9,14 +9,19 @@ permalink: /review-stop-using-jwt-for-sessions/
 categories:
   - Security
 ---
+JWTs are super popular. There are numerous articles out there that illustrate various benefits they provide - statelessness, ease of usage, scalability and more.
 
-If you've read any article or tutorial on JWTs, you've probably heard a lot about how great they are. They're stateless, self-contained, highly scalable, easy to work with and more. You've probably also wondered why JWTs are always used/recommended/taught without a clear discussion of the tradeoffs, and what their actual downsides are.
+For the skeptical amongst you, you've probably wondered why JWTs are always promoted without a clear discussion of the tradeoffs, and what their actual downsides are. 
+
+> I don't see the appeal of JWT. Cookie and session based authentication are just so much easier to manage
+
+> JWTs are always used/recommended/taught but I never see the tradeoffs mentioned. Just one day the community said "this is better". Occasionally you'll see it mentioned that they are stateless and don't need a cache or database lookup. the implications of that, however, are never brought up.
 
 In his article, Sven Slootweg (joepie91) writes elegantly about the [drawbacks of using JWT for sessions](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/). After defining a few terms, he lists all the claimed advantages of JWTs and one by one, offers up arguments against them. He then moves on to listing the downsides of using JWT as a session mechanism and providing supporting detail for each downside. The article wraps up with a section on what JWTs are good for, and ends urging readers to not use JWTs for persistent, long-lived data.
 
 <img src="/assets/images/lock-and-key.png" alt="jwt lock and key image" style="width: 40%; height: 40%;" align="left"/>
 
-I'll start off this review with a recommendation: [Read Sven's article!](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) If you're dubious about the benefits of JWTs, you will be able to articulate to your peers what their disadvantages are after reading it and be more confident in any decision you or y'all make. Also, regardless of what your current thoughts about JWTs are, you will likely learn a thing or two not only about JWTs, but about how to think about web application security. The article presents several security scenarios that any web developer must grapple with and account for, JWT usage notwithstanding, which makes for some very useful learning.
+I'll start off this review with a recommendation: [Read Sven's article!](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) If you're dubious about the benefits of JWTs, you will be able to articulate to your peers what their disadvantages are after reading it and be more confident in any decision y'all make. Also, regardless of what your current thoughts about JWTs are, you will likely learn a thing or two not only about JWTs, but about how to think about web application security. The article presents several security scenarios that any web developer must grapple with and account for, JWT usage notwithstanding, which makes for some very useful learning.
 
 While Sven covers a lot, there are a few things that could do with some more elaboration and coverage.
 
@@ -81,6 +86,14 @@ Take this section with a grain of salt because I'm not a cryptography expert, bu
 
 ---
 
-If you haven't already, check out my article on [mistakes that can be made when using JWTs](https://ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/).
+## What's next?
+
+Now that you've read Sven's article and reached the end of my review, what are next actions you can take?
+
+For one, if you're "stuck" with using JWTs or still believe in their usefulness for maintaining sessions, realize that the arguments raised in this article against JWTs can still be helpful. Regardless of which side you're on, I think everyone agrees with the fact that users and their information must be kept safe.
+
+If you haven't already, check out my article on [mistakes that can be made when using JWTs](https://www.ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/).
+
+If you were skeptical of JWTs to begin with and were having a hard time articulating what their disadvantages are, I hope you now have enough material to bring up in discussion with your peers 😁. [Write me](mailto://sidk@ducktypelabs.com) and let me know how it goes - I'd love to hear from you!
 
 I'm currently learning and writing all I can about JWTs and Authentication. Subscribe below to get notified whenever I publish a new article.
