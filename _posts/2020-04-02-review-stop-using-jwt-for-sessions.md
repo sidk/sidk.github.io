@@ -13,7 +13,7 @@ JWTs are super popular. There are numerous articles out there that illustrate va
 
 For the skeptical amongst you, you've probably wondered why JWTs are always promoted without a clear discussion of the tradeoffs, and what their actual downsides are. 
 
-> I don't see the appeal of JWT. Cookie and session based authentication are just so much easier to manage
+> I don't see the appeal of JWT. Cookie and session based authentication are just so much easier to manage.
 
 > JWTs are always used/recommended/taught but I never see the tradeoffs mentioned. Just one day the community said "this is better". Occasionally you'll see it mentioned that they are stateless and don't need a cache or database lookup. the implications of that, however, are never brought up.
 
@@ -90,7 +90,7 @@ Take this section with a grain of salt because I'm not a cryptography expert, bu
 
 Now that you've read Sven's article and reached the end of my review, what are next actions you can take?
 
-For one, if you're "stuck" with using JWTs or still believe in their usefulness for maintaining sessions, realize that the arguments raised in this article against JWTs can still be helpful. Regardless of which side you're on, I think everyone agrees with the fact that users and their information must be kept safe.
+If you're "stuck" with using JWTs or still believe in their usefulness for maintaining sessions, realize that the arguments raised in this article against JWTs can still be helpful. Regardless of which side you're on, I think everyone agrees with the fact that users and their information must be kept safe.
 
 If you haven't already, check out my article on [mistakes that can be made when using JWTs](https://www.ducktypelabs.com/5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication/).
 
