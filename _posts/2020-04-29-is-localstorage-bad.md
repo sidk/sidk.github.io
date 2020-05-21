@@ -17,7 +17,7 @@ You've probably _also_ heard that it is, in fact, alright to store JWTs in local
 
 If you've heard both points of view and are still feeling stuck on how best to think about the security of your own system and actually build something, read on. This article will hopefully help.
 
-Like any good debate (TODO: link to comment threads, one per word), both sides have valid points. The tricky, and _important_, thing for you, a web app developer, is to figure out two things:
+Like any good debate, both sides have valid points. The tricky, and _important_, thing for you, a web app developer, is to figure out two things:
 
 1. What the trade-offs are with each choice.
 2. Your comfort level with the worst case scenarios each choice implies
@@ -88,9 +88,6 @@ Do everything you can to protect your app against XSS. If you don't have a good 
 
 If you do have a good reason to put it in local storage, go for it! Either way, if you take the time to understand what the trade-offs are with the choices you have available to you, you won't stray too far.
 
-## Further Reading
+If you haven't already, check out my article on [mistakes that can be made when using JWT for authentication]({% post_url 2020-03-17-5-mistakes-web-developers-should-avoid-when-using-jwts-for-authentication %}). You'll probably also find [my article reviewing the drawbacks of using JWTs for sessions]({% post_url 2020-04-02-review-stop-using-jwt-for-sessions %}) useful.
 
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
-- https://www.rdegges.com/2018/please-stop-using-local-storage/
-- https://dev.to/oktadev/what-happens-if-your-jwt-is-stolen-298d
-- Add auth0's article on this
+Finally, if you found this article useful and would like to be notified when I publish a new one, drop your email in the box below! I aim to publish an article once every two weeks :)
