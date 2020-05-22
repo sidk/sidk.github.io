@@ -42,7 +42,7 @@ The strategy for dealing with an XSS vulnerability is very similar. Instead of a
 
 This way of thinking is called [defence in depth](<https://en.wikipedia.org/wiki/Defense_in_depth_(computing)>).
 
-## "Traditional" web apps
+## Cookies are more secure if you can use them
 
 When you're building an app where the following are true:
 
