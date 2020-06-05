@@ -1,0 +1,39 @@
+<div>
+  <label for="endpoint">Endpoint</label>
+  <input id="endpoint" type="text" />
+</div>
+<div>
+  <label for="http-method">HTTP Method</label>
+  <select id="http-method">
+    <option value="POST">POST</option>
+    <option value="GET">GET</option>
+    <option value="PUT">PUT(*not a "simple" request)</option>
+    <option value="DELETE">DELETE(*not a "simple" request)</option>
+  </select>
+</div>
+<button id="forge-request">Forge Request!</button>
+
+<script>
+  /*
+   * Check out these links to learn about "simple" requests
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Preflighted_requests
+   * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-method
+   */
+  const SIMPLE_REQUEST_METHODS = ["POST", "GET"];
+  const forgeRequest = () => {
+    const endpoint = document.getElementById("endpoint").value;
+    const httpMethod = document.getElementById("http-method").value;
+    fetch(endpoint, { method: httpMethod, credentials: "include" });
+    if (SIMPLE_REQUEST_METHODS.includes(httpMethod)) {
+      //const form = document.createElement("form");
+      //form.setAttribute("action", endpoint);
+      //form.setAttribute("method", httpMethod);
+      //const body = document.getElementsByTagName("body")[0];
+      //body.appendChild(form);
+      //form.submit();
+    }
+  };
+  document
+    .getElementById("forge-request")
+    .addEventListener("click", forgeRequest);
+</script>
