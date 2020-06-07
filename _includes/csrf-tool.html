@@ -1,5 +1,5 @@
 <div>
-  <label for="endpoint">Endpoint</label>
+  <label for="endpoint">Endpoint (make sure you include the protocol)</label>
   <input id="endpoint" type="text" />
 </div>
 <div>
@@ -25,12 +25,21 @@
     const httpMethod = document.getElementById("http-method").value;
     fetch(endpoint, { method: httpMethod, credentials: "include" });
     if (SIMPLE_REQUEST_METHODS.includes(httpMethod)) {
-      //const form = document.createElement("form");
-      //form.setAttribute("action", endpoint);
-      //form.setAttribute("method", httpMethod);
-      //const body = document.getElementsByTagName("body")[0];
-      //body.appendChild(form);
-      //form.submit();
+      const iframe = document.createElement("iframe");
+      iframe.hidden = true;
+      iframe.setAttribute("name", "the-iframe");
+      const form = document.createElement("form");
+      form.setAttribute("action", endpoint);
+      form.setAttribute("method", httpMethod);
+      /* we set the target of the form to the iframe. this puts the "ouput" of
+       * the form submit into the iframe and prevents the form from redirecting
+       * to "endpoint"
+       */
+      form.setAttribute("target", "the-iframe");
+      const body = document.getElementsByTagName("body")[0];
+      body.appendChild(iframe);
+      iframe.appendChild(form);
+      form.submit();
     }
   };
   document
