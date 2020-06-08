@@ -1,17 +1,19 @@
-<div>
-  <label for="endpoint">Endpoint (make sure you include the protocol)</label>
-  <input id="endpoint" type="text" />
+<div class="form-container p-4 csrf-tool">
+  <div>
+    <label for="endpoint">Endpoint (make sure you include the protocol):</label>
+    <input id="endpoint" type="text" size="38" />
+  </div>
+  <div class="pt-3">
+    <label for="http-method">HTTP Method:</label>
+    <select id="http-method">
+      <option value="POST">POST</option>
+      <option value="GET">GET</option>
+      <option value="PUT">PUT(*not a "simple" request)</option>
+      <option value="DELETE">DELETE(*not a "simple" request)</option>
+    </select>
+  </div>
+  <button class="mt-3" id="forge-request">Forge Request!</button>
 </div>
-<div>
-  <label for="http-method">HTTP Method</label>
-  <select id="http-method">
-    <option value="POST">POST</option>
-    <option value="GET">GET</option>
-    <option value="PUT">PUT(*not a "simple" request)</option>
-    <option value="DELETE">DELETE(*not a "simple" request)</option>
-  </select>
-</div>
-<button id="forge-request">Forge Request!</button>
 
 <script>
   /*
